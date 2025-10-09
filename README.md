@@ -10,4 +10,3 @@
 * Precious Olatunde
 * Loren Mena
 * Mack Bautista
-* Nagi Ahmed
