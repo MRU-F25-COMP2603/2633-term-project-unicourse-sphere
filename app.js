@@ -1,35 +1,36 @@
-const HTTP = require('http')
-const FS = require("fs")
+const HTTP = require('http');
+const FS = require("fs");
 
-const PORT = 3000
-const STATUS_OK = 200
-const STATUS_NOT_FOUND = 404
+const PORT = 3000;
+const STATUS_OK = 200;
+const STATUS_NOT_FOUND = 404;
+const FILE_NAME = "index.html";
 
-const ERR_MSG_LISTEN = "Something went wrong"
-const ERR_FILE_NOT_FOUND = "Error: File Not Found"
-const SUCCESS_LISTEN_MSG = "Server is listening on port "
+function createServer() {
+    return HTTP.createServer(function (req, res) {
+        res.writeHead(STATUS_OK, { "Content-Type": "text/html" });
+        FS.readFile(FILE_NAME, function (error, data) {
+            if (error) {
+                res.writeHead(STATUS_NOT_FOUND);
+                res.write("Error: File Not Found");
+            } else {
+                res.write(data);
+            }
+            res.end();
+        });
+    });
+}
 
-const FILE_NAME = "index.html"
-
-const SERVER = HTTP.createServer(function (req, res) {
-    res.writeHead(STATUS_OK, { "Content-Type": "text/html" })
-    FS.readFile(FILE_NAME, function (error, data) {
+// Only start server if file is run directly
+if (require.main === module) {
+    const server = createServer();
+    server.listen(PORT, function (error) {
         if (error) {
-            res.writeHead(STATUS_NOT_FOUND)
-            res.write(ERR_FILE_NOT_FOUND)
+            console.log("Something went wrong", error);
         } else {
-            res.write(data)
+            console.log("Server is listening on port", PORT);
         }
-        res.end();
-    })
-})
+    });
+}
 
-SERVER.listen(PORT, function (error) {
-    if (error) {
-        console.log(ERR_MSG_LISTEN, error)
-    } else {
-        console.log(SUCCESS_LISTEN_MSG, PORT)
-    }
-})
-
-
+module.exports = { createServer };
