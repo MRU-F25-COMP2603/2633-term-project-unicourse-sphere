@@ -1,0 +1,32 @@
+{
+  "name": "2633-term-project-unicourse-sphere",
+  "version": "1.0.0",
+  "description": "* Discord: https://discord.gg/DQRQr872",
+  "main": "app.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "start": "app.test.js",
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MRU-F25-COMP2603/2633-term-project-unicourse-sphere.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/MRU-F25-COMP2603/2633-term-project-unicourse-sphere/issues"
+  },
+  "homepage": "https://github.com/MRU-F25-COMP2603/2633-term-project-unicourse-sphere#readme",
+  "devDependencies": {
+    "mocha": "^11.0.0",
+    "eslint": "^9.38.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "prettier": "^3.6.2"
+  }
+}
