@@ -7,6 +7,7 @@
     "test": "test"
   },
   "scripts": {
+    "start": "app.test.js",
     "test": "mocha"
   },
   "repository": {
@@ -20,5 +21,12 @@
   "bugs": {
     "url": "https://github.com/MRU-F25-COMP2603/2633-term-project-unicourse-sphere/issues"
   },
-  "homepage": "https://github.com/MRU-F25-COMP2603/2633-term-project-unicourse-sphere#readme"
+  "homepage": "https://github.com/MRU-F25-COMP2603/2633-term-project-unicourse-sphere#readme",
+  "devDependencies": {
+    "mocha": "^11.0.0",
+    "eslint": "^9.38.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "prettier": "^3.6.2"
+  }
 }
