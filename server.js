@@ -17,7 +17,7 @@ function createServer() {
     });
 }
 
-// Only start server if file is run directly
+// changed comment
 if (require.main === module) {
     const server = createServer();
     server.listen(CONSTANTS.PORT, function (error) {
