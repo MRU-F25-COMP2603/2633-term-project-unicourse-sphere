@@ -5,8 +5,9 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ main, testing ]
+    branches: [ testing ]
   pull_request:
+    branches: [ testing ]
 
 jobs:
   test:
@@ -23,7 +24,12 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
 
       - name: Run tests
         run: npm test
