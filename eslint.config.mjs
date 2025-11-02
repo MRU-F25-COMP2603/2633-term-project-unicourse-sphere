@@ -5,17 +5,23 @@ export default defineConfig([
   {
     files: ["**/*.{js,mjs,cjs}"],
     plugins: { js },
-    extends: ["js/recommended", "plugin:prettier/recommended"],
+    extends: [
+      "eslint:recommended",
+      "plugin:@eslint/js/recommended",
+      "plugin:prettier/recommended",
+    ],
     languageOptions: {
       ecmaVersion: "latest",
       sourceType: "module",
-      globals: { node: true }
+      globals: { node: true },
     },
-    extends: ["eslint:recommended", "plugin:prettier/recommended"],
     rules: {
-      "semi": ["error", "never"],
+      semi: ["error", "always"],
       "no-unused-vars": "warn",
-      "no-console": "off"
-    }
-  }
+      "no-console": "off",
+      quotes: ["error", "double"],
+      "comma-dangle": ["error", "always-multiline"],
+      indent: ["error", 4],
+    },
+  },
 ]);
