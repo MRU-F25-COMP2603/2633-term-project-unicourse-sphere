@@ -39,7 +39,7 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-        name: Check ESLint installation
+      - name: Check ESLint installation
         run: npx eslint -v || echo "ESLint not found — ensure it's in devDependencies"
 
       - name: Lint with ESLint
@@ -58,5 +58,6 @@ jobs:
 
       - name: Optional Build/Deploy HTML
         run: echo "HTML files present, can add build or deploy steps here"
+
 
 
