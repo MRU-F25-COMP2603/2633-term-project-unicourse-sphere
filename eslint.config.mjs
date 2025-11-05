@@ -1,5 +1,6 @@
 import js from "@eslint/js";
-import prettier from "eslint-config-prettier";
+import prettierConfig from "eslint-config-prettier";
+import pluginPrettier from "eslint-plugin-prettier";
 import globals from "globals";
 import { defineConfig } from "eslint/config";
 
@@ -11,11 +12,16 @@ export default defineConfig([
       sourceType: "module",
       globals: globals.node,
     },
-    extends: [js.configs.recommended, "plugin:prettier/recommended"],
+    plugins: {
+      prettier: pluginPrettier,
+    },
     rules: {
+      ...js.configs.recommended.rules,
+      ...prettierConfig.rules,
       semi: ["error", "never"],
       "no-unused-vars": "warn",
       "no-console": "off",
+      "prettier/prettier": ["error"],
     },
   },
 ]);
