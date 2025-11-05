@@ -37,7 +37,7 @@ jobs:
           node-version: '20'  # change to your Node.js version
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Check ESLint installation
         run: npx eslint -v || echo "ESLint not found — ensure it's in devDependencies"
@@ -58,6 +58,7 @@ jobs:
 
       - name: Optional Build/Deploy HTML
         run: echo "HTML files present, can add build or deploy steps here"
+
 
 
 
