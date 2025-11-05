@@ -53,5 +53,6 @@ jobs:
           MYSQL_DATABASE: test_db
         run: npx mocha --recursive
 
-      - name: Optional: Build/Deploy HTML
+      - name: Optional Build/Deploy HTML
         run: echo "HTML files present, can add build or deploy steps here"
+
