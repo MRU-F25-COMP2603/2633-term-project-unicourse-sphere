@@ -1,21 +1,21 @@
 import js from "@eslint/js";
+import prettier from "eslint-config-prettier";
+import globals from "globals";
 import { defineConfig } from "eslint/config";
 
 export default defineConfig([
   {
     files: ["**/*.{js,mjs,cjs}"],
-    plugins: { js },
-    extends: ["js/recommended", "plugin:prettier/recommended"],
     languageOptions: {
       ecmaVersion: "latest",
       sourceType: "module",
-      globals: { node: true }
+      globals: globals.node,
     },
-    extends: ["eslint:recommended", "plugin:prettier/recommended"],
+    extends: [js.configs.recommended, "plugin:prettier/recommended"],
     rules: {
-      "semi": ["error", "never"],
+      semi: ["error", "never"],
       "no-unused-vars": "warn",
-      "no-console": "off"
-    }
-  }
+      "no-console": "off",
+    },
+  },
 ]);
