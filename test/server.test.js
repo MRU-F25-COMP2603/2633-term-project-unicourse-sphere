@@ -32,7 +32,6 @@ describe("HTTP Server", function () {
   it("should handle non-existent file gracefully", function (done) {
     // Temporarily test with a wrong file
     const fs = require("fs");
-    const originalFile = "index.html";
     const wrongFile = "nonexistent.html";
     const serverWithWrongFile = http
       .createServer((req, res) => {
