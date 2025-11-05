@@ -36,13 +36,13 @@ jobs:
           node-version: '20'
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
-      - name: Format files with Prettier
+      - name: Fix Prettier formatting
         run: npx prettier --write "**/*.{js,json,css,html}"
 
       - name: Lint with ESLint
-        run: npx eslint . || true  # ignore warnings; errors still fail
+        run: npx eslint . || true  # errors fail, warnings ignored
 
       - name: Run Mocha tests
         env:
