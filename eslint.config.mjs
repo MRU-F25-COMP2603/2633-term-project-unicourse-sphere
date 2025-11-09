@@ -26,7 +26,7 @@ export default defineConfig([
     rules: {
       ...js.configs.recommended.rules,
       ...prettierConfig.rules,
-      semi: ["error", "always"], // insert semicolons
+      semi: ["error", "always"],
       "no-unused-vars": "warn",
       "no-console": "off",
       "prettier/prettier": ["error", { semi: true }],

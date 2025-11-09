@@ -1,15 +1,14 @@
-// test/app.test.js
-const assert = require("assert");
-const http = require("http");
-const { createServer } = require("../server");
+import assert from "assert";
+import http from "http";
+import { createServer } from "../server.js";
 
-describe("HTTP Server", function () {
+describe("Express Server", function () {
   let server;
-  const PORT = 3001; // use a different port for tests
+  const PORT = 3001;
 
   // Start server before tests
   before(function (done) {
-    server = createServer().listen(PORT, done);
+    server = http.createServer(createServer()).listen(PORT, done);
   });
 
   // Stop server after tests
@@ -17,43 +16,45 @@ describe("HTTP Server", function () {
     server.close(done);
   });
 
+  /**
+   * @test
+   * @description Sends GET request to "/" and expects:
+   *   - HTTP 200
+   *   - Non-empty response body (the home page)
+   */
   it("should return 200 for /", function (done) {
     http.get(`http://localhost:${PORT}/`, (res) => {
       assert.strictEqual(res.statusCode, 200);
-      let data = "";
-      res.on("data", (chunk) => (data += chunk));
+
+      let body = "";
+      res.on("data", (chunk) => (body += chunk));
       res.on("end", () => {
-        assert.ok(data.length > 0); // file content exists
+        assert.ok(body.length > 0);
         done();
       });
     });
   });
 
+  /**
+   * @test
+   * @description Sends GET request to "/" with an invalid file name.
+   *   Overrides the file name in the server to "nonexistent.html".
+   *   Expects:
+   *     - HTTP 404
+   *     - Response body: "Error: File Not Found"
+   */
   it("should handle non-existent file gracefully", function (done) {
-    // Temporarily test with a wrong file
-    const fs = require("fs");
-    const wrongFile = "nonexistent.html";
-    const serverWithWrongFile = http
-      .createServer((req, res) => {
-        fs.readFile(wrongFile, (err, data) => {
-          if (err) {
-            res.writeHead(404);
-            res.write("Error: File Not Found");
-          } else {
-            res.write(data);
-          }
-          res.end();
-        });
-      })
-      .listen(PORT + 1);
+    process.env.FILE_NAME = "nonexistent.html"; // override file name dynamically
 
-    http.get(`http://localhost:${PORT + 1}/`, (res) => {
+    http.get(`http://localhost:${PORT}/`, (res) => {
       assert.strictEqual(res.statusCode, 404);
+
       let body = "";
       res.on("data", (chunk) => (body += chunk));
       res.on("end", () => {
         assert.strictEqual(body, "Error: File Not Found");
-        serverWithWrongFile.close(done);
+        delete process.env.FILE_NAME; // cleanup after test
+        done();
       });
     });
   });

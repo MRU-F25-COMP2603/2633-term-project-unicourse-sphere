@@ -1,32 +1,40 @@
-const CONSTANTS = require("./constants.js");
-const HTTP = require("http");
-const FS = require("fs");
+import express from "express";
+import path from "path";
+import * as CONSTANTS from "./constants.js";
 
-function createServer() {
-  return HTTP.createServer(function (req, res) {
-    res.writeHead(CONSTANTS.STATUS_OK, { "Content-Type": "text/html" });
-    FS.readFile(CONSTANTS.FILE_NAME, function (error, data) {
-      if (error) {
-        res.writeHead(CONSTANTS.STATUS_NOT_FOUND);
-        res.write(CONSTANTS.ERR_MSG_FILE_NF);
-      } else {
-        res.write(data);
+export function createServer() {
+  const app = express();
+
+  app.get("/", (req, res) => {
+    // Use FILE_NAME from env if set, else fallback to CONSTANTS
+    const fileName = process.env.FILE_NAME || CONSTANTS.FILE_NAME;
+    const filePath = path.resolve(fileName);
+
+    res.sendFile(filePath, (err) => {
+      if (err) {
+        return res
+          .status(CONSTANTS.STATUS_NOT_FOUND)
+          .send(CONSTANTS.ERR_MSG_FILE_NF);
       }
-      res.end();
     });
   });
+
+  // Catch-all 404 for other routes
+  app.use((req, res) => {
+    res.status(CONSTANTS.STATUS_NOT_FOUND).send(CONSTANTS.ERR_MSG_FILE_NF);
+  });
+
+  return app;
 }
 
-// changed comment
-if (require.main === module) {
+// Start server if this file is run directly
+if (process.argv[1] === new URL(import.meta.url).pathname) {
   const server = createServer();
-  server.listen(CONSTANTS.PORT, function (error) {
-    if (error) {
-      console.log("Something went wrong", error);
+  server.listen(CONSTANTS.PORT, (err) => {
+    if (err) {
+      console.error("Something went wrong:", err);
     } else {
-      console.log("Server is listening on port", CONSTANTS.PORT);
+      console.log(`Server is listening on port ${CONSTANTS.PORT}`);
     }
   });
 }
-
-module.exports = { createServer };
