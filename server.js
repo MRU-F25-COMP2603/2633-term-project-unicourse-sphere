@@ -1,6 +1,9 @@
 import express from "express";
 import path from "path";
+import { fileURLToPath } from "url";
 import * as CONSTANTS from "./constants.js";
+
+const __filename = fileURLToPath(import.meta.url);
 
 export function createServer() {
   const app = express();
@@ -19,7 +22,6 @@ export function createServer() {
     });
   });
 
-  // Catch-all 404 for other routes
   app.use((req, res) => {
     res.status(CONSTANTS.STATUS_NOT_FOUND).send(CONSTANTS.ERR_MSG_FILE_NF);
   });
@@ -27,8 +29,7 @@ export function createServer() {
   return app;
 }
 
-// Start server if this file is run directly
-if (process.argv[1] === new URL(import.meta.url).pathname) {
+if (process.argv[1] === __filename) {
   const server = createServer();
   server.listen(CONSTANTS.PORT, (err) => {
     if (err) {
