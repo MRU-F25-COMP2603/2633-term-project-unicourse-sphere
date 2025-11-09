@@ -17,7 +17,6 @@ jobs:
         image: mysql:8.0
         env:
           MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: unicourse_min
         ports:
           - 3306:3306
         options: >-
@@ -42,14 +41,20 @@ jobs:
         run: npx prettier --write "**/*.{js,json,css,html}"
 
       - name: Lint with ESLint
-        run: npx eslint . || true # errors fail, warnings ignored
+        run: npx eslint . || true
+
+      - name: Create and seed MySQL database
+        run: |
+          mysql -h 127.0.0.1 -u root -proot -e "CREATE DATABASE IF NOT EXISTS unicourse_min;"
+          mysql -h 127.0.0.1 -u root -proot unicourse_min < ./test/db/schema.sql
+          mysql -h 127.0.0.1 -u root -proot unicourse_min < ./test/db/seed.sql
 
       - name: Run Mocha tests
         env:
           MYSQL_HOST: 127.0.0.1
           MYSQL_USER: root
           MYSQL_PASSWORD: root
-          MYSQL_DATABASE: test_db
+          MYSQL_DATABASE: unicourse_min
         run: npx mocha --recursive
 
       - name: Optional Build/Deploy HTML
