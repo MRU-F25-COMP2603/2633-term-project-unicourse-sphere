@@ -9,7 +9,6 @@ export function createServer() {
   const app = express();
 
   app.get("/", (req, res) => {
-    // Use FILE_NAME from env if set, else fallback to CONSTANTS
     const fileName = process.env.FILE_NAME || CONSTANTS.FILE_NAME;
     const filePath = path.resolve(fileName);
 
