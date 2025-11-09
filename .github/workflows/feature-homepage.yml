@@ -1,4 +1,4 @@
-name: Node.js CI
+name: feature-homepage CI
 
 on:
   push:
@@ -41,13 +41,15 @@ jobs:
         run: npx prettier --write "**/*.{js,json,css,html}"
 
       - name: Lint with ESLint
-        run: npx eslint . || true
+        run: npx eslint . || true # errors fail, warnings ignored
 
-      - name: Create and seed MySQL database
+      - name: Create database
         run: |
           mysql -h 127.0.0.1 -u root -proot -e "CREATE DATABASE IF NOT EXISTS unicourse_min;"
-          mysql -h 127.0.0.1 -u root -proot unicourse_min < ./test/db/schema.sql
-          mysql -h 127.0.0.1 -u root -proot unicourse_min < ./test/db/seed.sql
+
+      - name: Load database schema
+        run: |
+          mysql -h 127.0.0.1 -u root -proot unicourse_min < ./test/database/schema.sql
 
       - name: Run Mocha tests
         env:
