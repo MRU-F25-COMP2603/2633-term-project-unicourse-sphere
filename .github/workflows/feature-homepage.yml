@@ -16,7 +16,7 @@ jobs:
       mysql:
         image: mysql:8.0
         env:
-          MYSQL_ROOT_PASSWORD: root
+          MYSQL_ROOT_PASSWORD: root # temporary root for setup
         ports:
           - 3306:3306
         options: >-
@@ -41,21 +41,26 @@ jobs:
         run: npx prettier --write "**/*.{js,json,css,html}"
 
       - name: Lint with ESLint
-        run: npx eslint . || true # errors fail, warnings ignored
+        run: npx eslint . || true
 
-      - name: Create database
+      - name: Create database and non-root user
         run: |
-          mysql -h 127.0.0.1 -u root -proot -e "CREATE DATABASE IF NOT EXISTS unicourse_min;"
+          mysql -h 127.0.0.1 -u root -proot -e "
+            CREATE DATABASE IF NOT EXISTS unicourse_min;
+            CREATE USER IF NOT EXISTS 'ci_user'@'%' IDENTIFIED BY 'ci_password';
+            GRANT ALL PRIVILEGES ON unicourse_min.* TO 'ci_user'@'%';
+            FLUSH PRIVILEGES;
+          "
 
       - name: Load database schema
         run: |
-          mysql -h 127.0.0.1 -u root -proot unicourse_min < ./database/schema.sql
+          mysql -h 127.0.0.1 -u ci_user -pci_password unicourse_min < ./database/schema.sql
 
       - name: Run Mocha tests
         env:
           MYSQL_HOST: 127.0.0.1
-          MYSQL_USER: root
-          MYSQL_PASSWORD: root
+          MYSQL_USER: ci_user
+          MYSQL_PASSWORD: ci_password
           MYSQL_DATABASE: unicourse_min
         run: npx mocha --recursive
 

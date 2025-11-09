@@ -15,4 +15,8 @@ describe("MySQL connection", function () {
     const [rows] = await pool.query("SELECT 1 + 1 AS result");
     expect(rows[0].result).to.equal(2);
   });
+
+  after(async function () {
+    await pool.end();
+  });
 });
