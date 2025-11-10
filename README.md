@@ -50,7 +50,7 @@ npm start
 ```sh
 # You should see home page (uni_course_sphere_homepage.html) being served by the Express server.
 
-http://localhost:300
+http://localhost:3000
 ```
 
 ### 7. Run automated tests (Mocha)
