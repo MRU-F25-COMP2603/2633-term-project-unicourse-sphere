@@ -1,21 +1,39 @@
 import js from "@eslint/js";
+import prettierConfig from "eslint-config-prettier";
+import pluginPrettier from "eslint-plugin-prettier";
+import globals from "globals";
+import pluginMocha from "eslint-plugin-mocha";
 import { defineConfig } from "eslint/config";
 
 export default defineConfig([
   {
     files: ["**/*.{js,mjs,cjs}"],
-    plugins: { js },
-    extends: ["js/recommended", "plugin:prettier/recommended"],
     languageOptions: {
       ecmaVersion: "latest",
       sourceType: "module",
-      globals: { node: true }
+      globals: {
+        ...globals.node,
+        describe: "readonly",
+        it: "readonly",
+        before: "readonly",
+        after: "readonly",
+      },
     },
-    extends: ["eslint:recommended", "plugin:prettier/recommended"],
+    plugins: {
+      prettier: pluginPrettier,
+      mocha: pluginMocha,
+    },
     rules: {
-      "semi": ["error", "never"],
+      ...js.configs.recommended.rules,
+      ...prettierConfig.rules,
+      semi: ["error", "always"],
       "no-unused-vars": "warn",
-      "no-console": "off"
-    }
-  }
+      "no-console": "off",
+      "prettier/prettier": ["error", { semi: true }],
+      "mocha/no-mocha-arrows": "error", // optional, set to "off" if you want arrows
+    },
+    settings: {
+      mocha: { version: "detect" },
+    },
+  },
 ]);
