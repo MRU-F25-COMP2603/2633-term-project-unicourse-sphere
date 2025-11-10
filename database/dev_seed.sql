@@ -1,3 +1,7 @@
+-- dev_seed.sql
+-- Populates the UniCourse database with sample data for testing and development.
+-- Includes sample users, courses, professors, enrollments, and ratings.
+
 -- Minimal seed for tests
 INSERT INTO users (email, password_hash, role) VALUES
 ('mentor@mtroyal.ca','x','mentor'),
