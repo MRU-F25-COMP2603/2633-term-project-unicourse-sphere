@@ -80,7 +80,11 @@ CREATE INDEX idx_courses_code  ON courses(code);
 CREATE INDEX idx_enr_course    ON enrollments(course_id);
 CREATE INDEX idx_mr_status     ON mentor_requests(status);
 
--- ---- Quick smoke test (optional) ----
+
+
+-- OPTIONAL: Quick smoke test for local development only
+-- Comment out or remove this section in production.
+
 -- Seed two users and a course
 INSERT INTO users(email,password_hash,role) VALUES
 ('alice@mtroyal.ca','x','student'),
@@ -98,7 +102,8 @@ VALUES (1,1,2);
 INSERT INTO mentor_pairs(course_id, mentor_id, mentee_id) VALUES (1,2,1);
 UPDATE mentor_requests SET status='matched' WHERE request_id=1;
 
--- Verify end-to-end
+-- Optional verification queries (keep commented)
+
 SHOW TABLES;
 DESCRIBE users;
 SELECT * FROM users;
