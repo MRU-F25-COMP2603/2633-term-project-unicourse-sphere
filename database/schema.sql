@@ -1,4 +1,9 @@
 
+-- schema.sql
+-- Defines the UniCourse minimal MySQL schema.
+-- Core tables: users, courses, enrollments, mentor_requests, mentor_pairs.
+-- Run this once to create the database structure.
+
 -- Makes a new folder to store all project's tables.
 CREATE DATABASE IF NOT EXISTS unicourse_min;
 USE unicourse_min;
