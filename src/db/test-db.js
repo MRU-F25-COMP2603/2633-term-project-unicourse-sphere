@@ -1,14 +1,25 @@
-const pool = require("./mysql.js");
+import { expect } from "chai";
+import pool from "../src/db/mysql.js"; // adjust path if needed
 
-async function testConnection() {
-  try {
+/**
+ * @testgroup Database connectivity
+ */
+describe("Database connection basic checks", function () {
+  /**
+   * @test
+   * @description Ensures database responds to a simple arithmetic query.
+   * @query "SELECT 1 + 1 AS result"
+   * @expectedResult result = 2
+   */
+  it("verifies that MySQL connection works and returns a test value", async function () {
     const [rows] = await pool.query("SELECT 1 + 1 AS result");
-    console.log("✅ Database connected! Test result:", rows[0].result);
-  } catch (err) {
-    console.error("❌ Database connection failed:", err.message);
-  } finally {
-    process.exit();
-  }
-}
 
-testConnection();
+    expect(rows.length).to.be.greaterThan(0);
+    expect(rows[0].result).to.equal(2);
+  });
+
+  // Optional: close pool after tests
+  after(async function () {
+    await pool.end();
+  });
+});
