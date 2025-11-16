@@ -13,7 +13,42 @@ git clone https://github.com/MRU-F25-COMP2603/2633-term-project-unicourse-sphere
 cd 2633-term-project-unicourse-sphere
 ```
 
-### 2. Set Up Environment
+### 2. Directory Structure
+- After cloning the repository, you should have the following structure:
+2633-term-project-unicourse-sphere/
+```sh
+2633-term-project-unicourse-sphere/
+├── database/
+│   ├── dev_seed.sql             # Sample data for development/testing
+│   ├── schema.sql               # MySQL schema for database setup
+├── src/
+│   ├── config/
+│   │   └── .env.example         # Example environment file for local setup
+│   ├── db/
+│   │   └── envconfig.js         # Exports MySQL environment variables from .env
+│   │   └── mysql.js             # MySQL pool connection
+│   │   └── test-db.js           # Optional test database script or connection helper
+│   └── server.js                # Express server with routes and API endpoints
+├── test/
+│   └── course.search.test.js    # Tests for course search endpoints
+│   └── db.connection.test.js    # Tests for database connectivity
+│   └── server.test.js           # General server endpoint tests
+├── .env                         # Local environment file (not tracked in Git)
+├── .gitignore                   # Specifies files/folders Git should ignore
+├── resources/
+│   └── dev-guide.md             # Developer guide
+│   └── team-resources.md        # Team-specific resources/documentation
+│   └── user-guide.md            # User manual guide
+├── constants.js                 # Centralized constants used across the project
+├── eslint.config.mjs            # ESLint configuration for code style/linting
+├── package-lock.json            # Auto-generated lockfile for Node dependencies
+├── package.json                 # Node.js project configuration and scripts
+├── README.md                    # Main project readme
+├── server.js                    # Entry point to start the server
+└── uni_course_sphere_homepage.html  # Static HTML homepage file
+```
+
+### 3. Set Up Environment
 
 - It is important that you set up your own environment variables before you proceed with any tests, especially running tests for MySQL.
 - **If you do not set this up first, local tests will fail and build will fail.**
@@ -156,3 +191,4 @@ npm install
 - Run all tests and fix linting issues.
 - Update _package.json_ version number if releasing a new version.
 - Document any manual steps in release notes (e.g. .env setup)
+
