@@ -325,19 +325,45 @@
     </footer>
 
     <script>
-      // Minimal client-side stub for demo purposes
-      function performSearch() {
+      async function performSearch() {
         const q = document.getElementById("search-input").value.trim();
         const results = document.getElementById("search-results");
+
         if (!q) {
           results.innerHTML =
             '<div style="color:var(--muted)">Enter a course code, title, or professor name to search.</div>';
           return;
         }
-        // This is a placeholder: in a real app you'd call an API endpoint
-        results.innerHTML =
-          `<div style="margin-top:10px"><strong>Showing results for:</strong> "${escapeHtml(q)}"</div>` +
-          `<div style="margin-top:8px;color:var(--muted)">No real backend connected in this draft.</div>`;
+
+        try {
+          const response = await fetch(
+            `/api/search?q=${encodeURIComponent(q)}`
+          );
+          const data = await response.json();
+
+          if (data.length === 0) {
+            results.innerHTML =
+              '<div style="color:var(--muted)">No results found.</div>';
+            return;
+          }
+
+          // Render results
+          results.innerHTML = data
+            .map(
+              (course) => `
+      <div class="course-card" style="margin-bottom:12px">
+        <div class="course-title">${escapeHtml(course.code)} — ${escapeHtml(course.title)}</div>
+        ${course.professor ? `<div class="meta">Professor: ${escapeHtml(course.professor)}</div>` : ""}
+        ${course.description ? `<div class="meta">${escapeHtml(course.description)}</div>` : ""}
+      </div>
+    `
+            )
+            .join("");
+        } catch (err) {
+          console.error(err);
+          results.innerHTML =
+            '<div style="color:red">Error: Could not fetch search results.</div>';
+        }
       }
 
       function escapeHtml(s) {
