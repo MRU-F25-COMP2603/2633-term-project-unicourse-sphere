@@ -1,4 +1,4 @@
-# UniCourse Sphere — Feature Prototype (Homepage Delivery)
+# UniCourse Sphere — Feature Prototype (Updated Home Delivery with Search Bar)
 
 ## Operational Feature (Prototype Demo)
 
@@ -10,8 +10,7 @@ For this sprint, we implemented a **vertical slice of the system** focusing on:
 - Visiting `/` returns a static homepage (`uni_course_sphere_homepage.html`) from the filesystem.
 - CI pipeline builds the project, loads dependencies, initializes a MySQL service, and runs tests using Mocha.
 
-> Database interaction exists in the workflow, but for this sprint **no UI-initiated DB read/write is fully functional yet**.  
-> Our only completed feature is displaying the homepage.
+> Database interaction works but needs further testing, and prints out the available courses under the search bar.
 
 ---
 
