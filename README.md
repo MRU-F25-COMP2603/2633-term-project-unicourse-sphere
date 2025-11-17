@@ -1,5 +1,11 @@
 # UniCourse Sphere — Feature Prototype (Updated Home Delivery with Search Bar)
 
+## 📌 Current Release
+
+**Version:** v1.0.0  
+**GitHub Tag:**  
+https://github.com/MRU-F25-COMP2603/2633-term-project-unicourse-sphere/releases/tag/v1.0.0
+
 ## Operational Feature (Prototype Demo)
 
 For this sprint, we implemented a **vertical slice of the system** focusing on:
