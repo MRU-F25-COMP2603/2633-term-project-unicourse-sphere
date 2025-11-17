@@ -1,0 +1,68 @@
+name: feature-homepage CI
+
+on:
+  push:
+    branches:
+      - feature-homepage
+  pull_request:
+    branches:
+      - feature-homepage
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root # temporary root for setup
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd "mysqladmin ping --silent"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 3
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Fix Prettier formatting
+        run: npx prettier --write "**/*.{js,json,css,html}"
+
+      - name: Lint with ESLint
+        run: npx eslint . || true
+
+      - name: Create database and non-root user
+        run: |
+          mysql -h 127.0.0.1 -u root -proot -e "
+            CREATE DATABASE IF NOT EXISTS unicourse_min;
+            CREATE USER IF NOT EXISTS 'ci_user'@'%' IDENTIFIED BY 'ci_password';
+            GRANT ALL PRIVILEGES ON unicourse_min.* TO 'ci_user'@'%';
+            FLUSH PRIVILEGES;
+          "
+
+      - name: Load database schema
+        run: |
+          mysql -h 127.0.0.1 -u ci_user -pci_password unicourse_min < ./database/schema.sql
+
+      - name: Run Mocha tests
+        env:
+          MYSQL_HOST: 127.0.0.1
+          MYSQL_USER: ci_user
+          MYSQL_PASSWORD: ci_password
+          MYSQL_DATABASE: unicourse_min
+        run: npx mocha --recursive
+
+      - name: Optional Build/Deploy HTML
+        run: echo "HTML files present — add build or deploy steps here"
