@@ -6,6 +6,19 @@
 **GitHub Tag:**  
 https://github.com/MRU-F25-COMP2603/2633-term-project-unicourse-sphere/releases/tag/v1.0.0
 
+## Documentation
+
+The following guides provide essential information for developing, using, and supporting the UniCourse Sphere project:
+
+- **Developer Guide** – Technical documentation for contributors, including system architecture, setup instructions, API details, and coding standards.  
+  [Developer Guide](https://github.com/MRU-F25-COMP2603/2633-term-project-unicourse-sphere/blob/main/resources/dev-guide.md)
+
+- **User Guide** – Step-by-step instructions for end users on how to navigate and use the UniCourse Sphere application.  
+  [User Guide](https://github.com/MRU-F25-COMP2603/2633-term-project-unicourse-sphere/blob/main/resources/user-guide.md)
+
+- **Team Resources** – Internal project materials such as planning documents, conventions, roles, and collaboration references. _Note: access to the Google Drive folder requires permission access._
+  [Team Resources](https://github.com/MRU-F25-COMP2603/2633-term-project-unicourse-sphere/blob/main/resources/team-resources.md)
+
 ## Operational Feature (Prototype Demo)
 
 For this sprint, we implemented a **vertical slice of the system** focusing on:
@@ -25,7 +38,7 @@ For this sprint, we implemented a **vertical slice of the system** focusing on:
 ### 1. Clone the repository
 
 ```sh
-git clone https://github.com/<your-org>/<repo>.git
+git clone https://github.com/MRU-F25-COMP2603/2633-term-project-unicourse-sphere.git
 cd <repo>
 ```
 

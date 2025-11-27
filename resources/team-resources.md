@@ -2,7 +2,6 @@
 1. Precious Olatunde -
 2. Mack Bautista -
 3. Loren Mena -
-4. Nagi Ahmed -
 
 ## Project Artifacts
 * Git repository: https://github.com/MRU-F25-COMP2603/2633-term-project-unicourse-sphere.git
