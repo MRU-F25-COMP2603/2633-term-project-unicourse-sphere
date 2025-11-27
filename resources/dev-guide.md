@@ -14,8 +14,10 @@ cd 2633-term-project-unicourse-sphere
 ```
 
 ### 2. Directory Structure
+
 - After cloning the repository, you should have the following structure:
-2633-term-project-unicourse-sphere/
+  2633-term-project-unicourse-sphere/
+
 ```sh
 2633-term-project-unicourse-sphere/
 ├── database/
@@ -47,6 +49,14 @@ cd 2633-term-project-unicourse-sphere
 ├── server.js                    # Entry point to start the server
 └── uni_course_sphere_homepage.html  # Static HTML homepage file
 ```
+
+**Notes for developers:**
+
+- The _src/_ directory contains all core server and database logic.
+- The _database/_ folder holds SQL scripts for creating and seeding the database.
+- The _resource/_ contains all project documentation.
+- The root _server.js_ is the entry point used by npm start.
+- The _.env_ file must be created locally using the _.env.example_ template inside _src/config/_.
 
 ### 3. Set Up Environment
 
@@ -107,14 +117,25 @@ npm run lint:fix
 
 ### 5. Adding New Tests
 
-- Test files should be placed in _/test/_ and use the pattern \*_.test.js_.
-- Use Mocha/Chai syntax:
+All automated tests must be written using **Mocha/Chai** and placed in the `/test` directory.  
+Each test file must follow the naming convention: `*.test.js`
 
-```sh
+#### Test Structure Guidelines
+
+- Place all new tests inside the `/test/` directory.
+- Name the file after the module or feature being tested  
+  (e.g. `server.test.js`, `course.search.test.js`)
+- Use Mocha’s `describe()` and `it()` blocks
+- Always clean up resources (e.g. close server connections)
+- Use a separate port for test servers to avoid conflicts
+
+#### Example: Dummy Test File
+
+```js
 /**
  * @file dummy.test.js
- * @description Example test file demonstrating coding style, structure, and headers
- *              for adding new tests in UniCourse Sphere.
+ * @description Example test file demonstrating structure and coding style
+ *              for UniCourse Sphere tests
  */
 
 import assert from "assert";
@@ -123,25 +144,16 @@ import { createServer } from "../src/server.js";
 
 describe("Dummy Test Suite", function () {
   let server;
-  const PORT = 3002; // Use a different port for dummy tests
+  const PORT = 3002;
 
-  // Start server before tests
   before(function (done) {
     server = http.createServer(createServer()).listen(PORT, done);
   });
 
-  // Stop server after tests
   after(function (done) {
     server.close(done);
   });
 
-  /**
-   * @test
-   * @description Sends GET request to "/api/search" with empty query.
-   *              Expects:
-   *                - HTTP 200
-   *                - Empty array returned
-   */
   it("should return empty array for empty search query", function (done) {
     http.get(`http://localhost:${PORT}/api/search?q=`, (res) => {
       assert.strictEqual(res.statusCode, 200);
@@ -150,19 +162,12 @@ describe("Dummy Test Suite", function () {
       res.on("data", (chunk) => (body += chunk));
       res.on("end", () => {
         const json = JSON.parse(body);
-        assert.deepStrictEqual(json, []); // Expect empty array
+        assert.deepStrictEqual(json, []);
         done();
       });
     });
   });
 
-  /**
-   * @test
-   * @description Sends GET request to a non-existent endpoint.
-   *              Expects:
-   *                - HTTP 404
-   *                - Response body matches error message
-   */
   it("should return 404 for unknown endpoint", function (done) {
     http.get(`http://localhost:${PORT}/nonexistent`, (res) => {
       assert.strictEqual(res.statusCode, 404);
@@ -178,9 +183,29 @@ describe("Dummy Test Suite", function () {
 });
 ```
 
-- Name your test files after the module being tests (e.g. server.test.js) for server testing.
+## 6. Reporting a Bug
 
-### 6. Building A Release
+If you encounter a bug:
+
+1. Open a new issue in the GitHub repository:
+   [Issues Tracker](https://github.com/MRU-F25-COMP2603/2633-term-project-unicourse-sphere/issues)
+2. Provide:
+
+- Steps to reproduce the bug
+- Expected behaviour
+- Actual behaviour
+- Browser/OS information
+- Screenshot (if applicable)
+
+3. Resources for writing a good bug report:
+
+    [How to Write a Good Bug Report](https://marker.io/blog/how-to-write-bug-report)
+
+    [How to Write A Good Bug Report?](https://www.geeksforgeeks.org/software-testing/how-to-write-a-good-bug-report/)
+
+    [Bug Writing Guidelines](https://bugzilla.mozilla.org/page.cgi?id=bug-writing.html)
+
+### 7. Building A Release
 
 - Ensure all dependencies are up to date:
 
@@ -191,4 +216,3 @@ npm install
 - Run all tests and fix linting issues.
 - Update _package.json_ version number if releasing a new version.
 - Document any manual steps in release notes (e.g. .env setup)
-

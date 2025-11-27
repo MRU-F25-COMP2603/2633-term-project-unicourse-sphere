@@ -8,9 +8,9 @@ https://github.com/MRU-F25-COMP2603/2633-term-project-unicourse-sphere/releases/
 
 ## Documentation
 
-The following guides provide essential information for developing, using, and supporting the UniCourse Sphere project:
+The following comprehensive guides provide essential information for developing, using, and supporting the UniCourse Sphere project:
 
-- **Developer Guide** – Technical documentation for contributors, including system architecture, setup instructions, API details, and coding standards.  
+- **Developer Guide** – Technical documentation for contributors, including system architecture, setup instructions, and coding standards.  
   [Developer Guide](https://github.com/MRU-F25-COMP2603/2633-term-project-unicourse-sphere/blob/main/resources/dev-guide.md)
 
 - **User Guide** – Step-by-step instructions for end users on how to navigate and use the UniCourse Sphere application.  
@@ -33,49 +33,35 @@ For this sprint, we implemented a **vertical slice of the system** focusing on:
 
 ---
 
-## Build, Test & Run Instructions
+## Setup & Usage
 
-### 1. Clone the repository
+Detailed setup, configuration, testing, and usage instructions are maintained in the official guides:
 
-```sh
-git clone https://github.com/MRU-F25-COMP2603/2633-term-project-unicourse-sphere.git
-cd <repo>
-```
+- 📘 **Developer Setup & Testing**  
+  https://github.com/MRU-F25-COMP2603/2633-term-project-unicourse-sphere/blob/main/resources/dev-guide.md
 
-### 2. Create your local .env file:
+- 📗 **User Instructions**  
+  https://github.com/MRU-F25-COMP2603/2633-term-project-unicourse-sphere/blob/main
+  resources/user-guide.md
 
-```sh
-# Copy the example file to create your local .env
-cp src/config/.env.example src/config/.env
+## Reporting A Bug
 
-# Edit src/config/.env with your local MySQL credentials if needed
-```
+If you encounter a bug:
 
-### 3. Install dependencies
+1. Open a new issue in the GitHub repository:
+   [Issues Tracker](https://github.com/MRU-F25-COMP2603/2633-term-project-unicourse-sphere/issues)
+2. Provide:
 
-```sh
-npm install
-```
+- Steps to reproduce the bug
+- Expected behaviour
+- Actual behaviour
+- Browser/OS information
+- Screenshot (if applicable)
 
-### 4. Run the server
+3. Resources for writing a good bug report:
 
-```sh
-npm start
-```
+   [How to Write a Good Bug Report](https://marker.io/blog/how-to-write-bug-report)
 
-### 5. Load application in a web browser
+   [How to Write A Good Bug Report?](https://www.geeksforgeeks.org/software-testing/how-to-write-a-good-bug-report/)
 
-```sh
-# You should see home page (uni_course_sphere_homepage.html) being served by the Express server.
-
-http://localhost:3000
-```
-
-### 7. Run automated tests (Mocha)
-
-```sh
-# Ensure your .env is configured (see step 2), then run:
-npm test
-```
-
----
+   [Bug Writing Guidelines](https://bugzilla.mozilla.org/page.cgi?id=bug-writing.html)

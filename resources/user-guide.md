@@ -39,16 +39,19 @@ cd 2633-term-project-unicourse-sphere
 ```
 
 2. Install Node.js dependencies:
+
 ```sh
 npm install
 ```
 
 3. Set up environment variables:
+
 ```sh
 co src/config/.env.example .env
 ```
 
 4. Edit .env with your local MySQL credentials:
+
 ```sh
 MYSQL_HOST=127.0.0.1
 MYSQL_PORT=3306
@@ -58,17 +61,21 @@ MYSQL_PASSWORD=your_password
 ```
 
 ## 3. Running the Web Application
+
 1. Start the server:
+
 ```sh
 npm start
 ```
 
 2. Open your browser and navigate to:
+
 ```sh
 http://localhost:3000
 ```
 
 ## 4. How to Use the Web Application
+
 **Searching for Courses**
 
 Use the search bar on the homepage to look for courses by:
@@ -88,10 +95,13 @@ Currently WIP — functionality to submit mentor requests is under development.
 Currently WIP — functionality to view confirmed mentor-mentee pairs is under development.
 
 ## 5. Reporting a Bug
+
 If you encounter a bug:
+
 1. Open a new issue in the GitHub repository:
-    [Issues Tracker](https://github.com/MRU-F25-COMP2603/2633-term-project-unicourse-sphere/issues)
+   [Issues Tracker](https://github.com/MRU-F25-COMP2603/2633-term-project-unicourse-sphere/issues)
 2. Provide:
+
 - Steps to reproduce the bug
 - Expected behaviour
 - Actual behaviour
@@ -100,15 +110,16 @@ If you encounter a bug:
 
 3. Resources for writing a good bug report:
 
-    [How to Write a Good Bug Report](https://marker.io/blog/how-to-write-bug-report)
+   [How to Write a Good Bug Report](https://marker.io/blog/how-to-write-bug-report)
 
-    [How to Write A Good Bug Report?](https://www.geeksforgeeks.org/software-testing/how-to-write-a-good-bug-report/)
+   [How to Write A Good Bug Report?](https://www.geeksforgeeks.org/software-testing/how-to-write-a-good-bug-report/)
 
-    [Bug Writing Guidelines](https://bugzilla.mozilla.org/page.cgi?id=bug-writing.html)
-
+   [Bug Writing Guidelines](https://bugzilla.mozilla.org/page.cgi?id=bug-writing.html)
 
 ## 6. Known Bugs & Limitations
+
 Please check the GitHub Issues tracker for the latest known bugs and update.
+
 - Frontend UI is minimal; only basic homepage and API endpoints are functional
 - Full mentor request submission and approval workflow [WIP]
 - Full mentor request submission and approval workflow [WIP]
