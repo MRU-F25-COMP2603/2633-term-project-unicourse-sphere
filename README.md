@@ -28,6 +28,14 @@ For this sprint, we implemented a **vertical slice of the system** focusing on:
 git clone https://github.com/<your-org>/<repo>.git
 cd <repo>
 ```
+## Database Setup (MySQL Required)
+
+This project uses MySQL and includes setup scripts for consistent local configuration.
+
+### Create the database and MySQL user
+
+```sh
+mysql -u root -p < database/dev_setup.sql
 
 ### 2. Create your local .env file:
 
