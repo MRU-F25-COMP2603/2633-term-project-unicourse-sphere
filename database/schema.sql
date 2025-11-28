@@ -5,8 +5,8 @@
 -- Run this once to create the database structure.
 
 -- Makes a new folder to store all project's tables.
-CREATE DATABASE IF NOT EXISTS unicourse_min;
-USE unicourse_min;
+CREATE DATABASE IF NOT EXISTS unicourse_sphere;
+USE unicourse_sphere;
 -- Remove this section when testing.
 -- Tested using "https://www.db-fiddle.com/"
 
