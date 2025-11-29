@@ -47,7 +47,7 @@ npm install
 3. Set up environment variables:
 
 ```sh
-co src/config/.env.example .env
+cp src/config/.env.example .env
 ```
 
 4. Edit .env with your local MySQL credentials:
@@ -125,3 +125,4 @@ Please check the GitHub Issues tracker for the latest known bugs and update.
 - Full mentor request submission and approval workflow [WIP]
 - User authentication and roles management [WIP]
 - Advanced search filters (e.g., course term, department) [WIP]
+
