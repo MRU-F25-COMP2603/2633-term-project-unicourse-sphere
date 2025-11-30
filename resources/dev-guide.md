@@ -15,69 +15,99 @@ cd 2633-term-project-unicourse-sphere
 
 ### 2. Directory Structure
 
-- After cloning the repository, you should have the following structure:
-  2633-term-project-unicourse-sphere/
+After cloning the repository, your project should look like this:
 
 ```sh
 2633-term-project-unicourse-sphere/
-├── database/                       # Database scripts for setup and seeding
-│   ├── dev_seed.sql                # Sample data for development/testing
-│   ├── schema.sql                  # MySQL schema for database setup
-│   └── dev_setup.sql               # Script to create DB, tables, and seed data
-├── src/                            # Source code for the application
+├── database/                           # Contains SQL scripts for database creation and seeding
+│   ├── dev_seed.sql                    # Sample data for development/testing
+│   ├── schema.sql                      # MySQL schema defining tables, keys, and constraints
+│   └── dev_setup.sql                   # Script to create the database, tables, and seed default development data
+├── src/                                # Core server and database logic
 │   ├── config/
-│   │   └── .env.example            # Example environment variables file
+│   │   └── .env.example                # Template for environment variables (copy to .env)
 │   ├── db/
-│   │   └── envconfig.js            # Loads MySQL credentials from .env
-│   │   └── mysql.js                # Creates MySQL pool connection
-│   └── server.js                   # Express server setup and route registration
-├── test/                           # Unit & integration tests
-│   └── course.search.test.js       # Tests for course search endpoints
-│   └── db.connection.test.js       # Tests MySQL database connectivity
-│   └── server.test.js              # General server endpoint tests
-│   └── featured-courses.test.js    # Tests for featured courses API
-│   └── home.test.js                # Tests for home route
-│   └── search.test.js              # Tests for search API endpoints
-│   └── teardown.test.js            # Cleanup tests / reset DB after tests
-├── routes/                         # Express route modules
-│   └── featured-courses.js         # API endpoint for featured courses
-│   └── home.js                     # Home page route
-│   └── search.js                   # Search API endpoint
-├── .env                            # Local environment variables (not tracked)
-├── .gitignore                      # Ignore node_modules, .env, and other files
-├── resources/                      # Documentation and guides
-│   └── dev-guide.md                # Developer-focused setup & workflow guide
-│   └── team-resources.md           # Internal team documentation
-│   └── user-guide.md               # User-facing manual (setup & usage)
-├── constants.js                    # Central constants used throughout the project
-├── eslint.config.mjs               # ESLint config for code style/linting
-├── package-lock.json               # Auto-generated Node dependency lockfile
-├── package.json                    # Node project metadata and scripts
-├── README.md                       # Project-level documentation
-├── server.js                       # Entry point for the server (runs Express app)
-└── uni_course_sphere_homepage.html # Static homepage HTML file
-
+│   │   ├── envconfig.js                # Loads MySQL credentials from .env
+│   │   └── mysql.js                    # Creates MySQL connection pool
+│   └── server.js                       # Initializes and configures Express server, registers routes
+├── routes/                             # Express route modules
+│   ├── courses.js                      # API and HTML endpoints for course details
+│   ├── featured-courses.js             # Endpoint serving featured courses
+│   ├── home.js                         # Route for homepage
+│   ├── professor-spotlight.js          # Endpoint for professor spotlight section
+│   └── search.js                       # API endpoint for course search functionality
+├── public/                             # Static public assets served by the Express server
+│   ├── course_details.html             # HTML template for individual course pages
+│   └── uni_course_sphere_homepage.html # Static homepage HTML file served at `/`
+├── test/                               # Unit and integration tests
+│   ├── course.search.test.js           # Tests for course search endpoint
+│   ├── courses.test.js                 # Tests for courses API
+│   ├── db.connection.test.js           # Tests MySQL database connectivity
+│   ├── featured-courses.test.js        # Tests for featured courses API
+│   ├── home.test.js                    # Tests for homepage route
+│   ├── professor-spotlight.test.js     # Tests professor spotlight endpoint
+│   ├── search.test.js                  # Tests search API endpoints
+│   └── teardown.test.js                # Cleanup tests, reset DB after tests
+├── resources/                          # Project documentation
+│   ├── dev-guide.md                    # Developer setup, build, and workflow guide
+│   ├── team-resources.md               # Internal team planning documents and conventions
+│   └── user-guide.md                   # User-facing guide (setup and usage)
+├── .env                                # Local environment variables (not tracked by Git)
+├── .gitignore                          # Files/folders ignored by Git (node_modules, .env, etc.)
+├── constants.js                        # Project-wide constants used throughout the application
+├── eslint.config.mjs                   # ESLint configuration for linting
+├── package-lock.json                   # Automatically generated lockfile for Node dependencies
+├── package.json                        # Node.js project metadata and scripts
+├── README.md                           # Project-level documentation
+└── server.js                           # Entry point for the server; runs Express app
 ```
 
-## Notes for developers
+## Notes for Developers
 
-- The **src/** directory contains all core server and database logic:
-  - `server.js` — sets up and runs the Express app.
-  - `db/` — contains MySQL connection logic (`mysql.js`) and environment variable loader (`envconfig.js`).
+- **src/**  
+  Contains all server and database logic:
+  - `server.js` — sets up the Express server and registers routes.
+  - `db/` — MySQL connection logic (`mysql.js`) and environment variable loader (`envconfig.js`).
   - `config/` — holds the `.env.example` template for environment variables.
-- The **database/** folder holds SQL scripts for creating and seeding the database:
-  - `schema.sql` — database schema definitions.
-  - `dev_setup.sql` — creates the database, tables, and default development data.
+
+- **database/**  
+  SQL scripts to create and seed the MySQL database:
+  - `schema.sql` — defines tables, keys, and constraints.
+  - `dev_setup.sql` — creates the database, tables, and seeds initial data.
   - `dev_seed.sql` — additional sample data for testing.
-- The **routes/** folder contains all Express route modules (`home.js`, `search.js`, `featured-courses.js`).
-- The **test/** folder contains unit and integration tests for server routes, database connectivity, and API endpoints.
-- The **resources/** folder contains all project documentation:
-  - `user-guide.md` — manual for end-users.
-  - `dev-guide.md` — developer setup and workflow guide.
-  - `team-resources.md` — internal team documentation.
-- The root **server.js** file is the entry point used by `npm start`.
-- The **.env** file must be created locally using the `.env.example` template inside `src/config/`.
-- The **uni_course_sphere_homepage.html** file is the static homepage served at `/` for the application.
+
+- **routes/**  
+  All Express route modules, including APIs and HTML page endpoints:
+  - `home.js` — homepage route.
+  - `search.js` — course search API endpoint.
+  - `courses.js` — course details endpoints.
+  - `featured-courses.js` — featured courses API.
+  - `professor-spotlight.js` — professor spotlight API.
+
+- **public/**  
+  Contains static assets served by the Express server:
+  - `uni_course_sphere_homepage.html` — static homepage served at `/`.
+  - `course_details.html` — HTML template for individual course pages.
+  - Any additional assets like CSS, JS, or images can also be placed here.
+
+- **test/**  
+  Unit and integration tests for server routes, API endpoints, and database connectivity:
+  - Follow Mocha/Chai conventions.
+  - Test files must follow the `*.test.js` naming convention.
+
+- **resources/**  
+  Project documentation:
+  - `dev-guide.md` — developer-focused setup and workflow guide.
+  - `user-guide.md` — instructions for end-users.
+  - `team-resources.md` — internal team planning documents and conventions.
+
+- **Root files**
+  - `server.js` — entry point used by `npm start`.
+  - `.env` — local environment variables file; must be created from `.env.example`.
+  - `constants.js` — project-wide constants used throughout the application.
+  - `package.json` & `package-lock.json` — Node.js project metadata and dependency management.
+  - `eslint.config.mjs` — ESLint configuration for linting and code style.
+  - `README.md` — project-level documentation.
 
 ### 3. MySQL Database Setup
 

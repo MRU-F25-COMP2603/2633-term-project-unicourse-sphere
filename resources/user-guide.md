@@ -10,8 +10,8 @@ UniCourse Sphere is a web-based course management and mentorship system for univ
 Users can:
 
 - Search for courses by code, title, or instructor.
-- Request mentorship in courses they are enrolled in.
-- Track mentor-mentee pairings (for mentors and students).
+- View course details including department, level, professor, mentor, and average rating.
+- Navigate course-specific pages for more in-depth information.
 
 **Why use it:**  
 This system centralizes course and mentorship management, making it easier for students to find support and for mentors to manage requests.
@@ -101,23 +101,31 @@ http://localhost:3000
 
 ## 4. How to Use the Web Application
 
-**Searching for Courses**
+### Searching for Courses
 
 Use the search bar on the homepage to look for courses by:
 
-- Course code (e.g., COMP2603)
-- Course title (e.g., Web Development)
-- Professor email
+- **Course code** (e.g., `COMP 2633`)
+- **Course title** (e.g., `Foundations of Software Engineering`)
 
-Results show course details and assigned mentors (if any).
+> Note: Searching by professor name or other fields is not supported.
 
-**Requesting a Mentor**
+Search results display:
 
-Currently WIP — functionality to submit mentor requests is under development.
+- Course code & title
+- Department
+- Level
+- Professor
+- Mentor (if assigned)
+- Average rating
 
-**Viewing Mentor Pairs**
+### Requesting a Mentor
 
-Currently WIP — functionality to view confirmed mentor-mentee pairs is under development.
+⚠️ This feature is **not available in the final release**. Mentor request submission will be **not be added** due to time constraints.
+
+### Viewing Mentor Pairs
+
+⚠️ This feature is **not available in the final release**. Viewing confirmed mentor-mentee pairs will **not be added** due to time constraints.
 
 ## 5. Reporting a Bug
 
@@ -143,10 +151,10 @@ If you encounter a bug:
 
 ## 6. Known Bugs & Limitations
 
-Please check the GitHub Issues tracker for the latest known bugs and update.
+Please check the [GitHub Issues tracker](https://github.com/MRU-F25-COMP2603/2633-term-project-unicourse-sphere/issues) for the latest known bugs and updates.
 
-- Frontend UI is minimal; only basic homepage and API endpoints are functional
-- Full mentor request submission and approval workflow [WIP]
-- Full mentor request submission and approval workflow [WIP]
-- User authentication and roles management [WIP]
-- Advanced search filters (e.g., course term, department) [WIP]
+- Frontend UI is minimal; only the homepage and course search functionality are fully implemented.
+- Mentor request submission and approval workflow is **not available in this release**.
+- Viewing confirmed mentor-mentee pairs is **not available in this release**.
+- User authentication and role management is **not available in this release**.
+- Advanced search filters (e.g., course term, department) are **not available in this release**.
