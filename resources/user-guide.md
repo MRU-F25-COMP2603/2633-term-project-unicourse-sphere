@@ -56,11 +56,36 @@ cp src/config/.env.example .env
 MYSQL_HOST=127.0.0.1
 MYSQL_PORT=3306
 MYSQL_DB=unicourse_min
-MYSQL_USER=your_username
+MYSQL_USER=root
 MYSQL_PASSWORD=your_password
 ```
 
-## 3. Running the Web Application
+## 3. Setting Up the Database
+
+To initialize the database and seed it with development data:
+
+1. Open a terminal (ideally in VSCode) and log in to MySQL as root:
+
+```sh
+mysql -u root -p
+Enter password:
+```
+
+2. Once inside the MySQL prompt, load the development setup SQL file:
+
+```sh
+SOURCE ./database/dev_setup.sql;
+```
+
+_Note: Use the relative path to dev_setup.sql from the repository root. If your terminal is elsewhere, adjust the path accordingly._
+
+3. Exit the MySQL prompt:
+
+```sh
+EXIT;
+```
+
+## 4. Running the Web Application
 
 1. Start the server:
 
@@ -125,4 +150,3 @@ Please check the GitHub Issues tracker for the latest known bugs and update.
 - Full mentor request submission and approval workflow [WIP]
 - User authentication and roles management [WIP]
 - Advanced search filters (e.g., course term, department) [WIP]
-

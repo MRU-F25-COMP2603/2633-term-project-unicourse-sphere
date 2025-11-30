@@ -20,70 +20,105 @@ cd 2633-term-project-unicourse-sphere
 
 ```sh
 2633-term-project-unicourse-sphere/
-├── database/
-│   ├── dev_seed.sql             # Sample data for development/testing
-│   ├── schema.sql               # MySQL schema for database setup
-├── src/
+├── database/                       # Database scripts for setup and seeding
+│   ├── dev_seed.sql                # Sample data for development/testing
+│   ├── schema.sql                  # MySQL schema for database setup
+│   └── dev_setup.sql               # Script to create DB, tables, and seed data
+├── src/                            # Source code for the application
 │   ├── config/
-│   │   └── .env.example         # Example environment file for local setup
+│   │   └── .env.example            # Example environment variables file
 │   ├── db/
-│   │   └── envconfig.js         # Exports MySQL environment variables from .env
-│   │   └── mysql.js             # MySQL pool connection
-│   │   └── test-db.js           # Optional test database script or connection helper
-│   └── server.js                # Express server with routes and API endpoints
-├── test/
-│   └── course.search.test.js    # Tests for course search endpoints
-│   └── db.connection.test.js    # Tests for database connectivity
-│   └── server.test.js           # General server endpoint tests
-├── .env                         # Local environment file (not tracked in Git)
-├── .gitignore                   # Specifies files/folders Git should ignore
-├── resources/
-│   └── dev-guide.md             # Developer guide
-│   └── team-resources.md        # Team-specific resources/documentation
-│   └── user-guide.md            # User manual guide
-├── constants.js                 # Centralized constants used across the project
-├── eslint.config.mjs            # ESLint configuration for code style/linting
-├── package-lock.json            # Auto-generated lockfile for Node dependencies
-├── package.json                 # Node.js project configuration and scripts
-├── README.md                    # Main project readme
-├── server.js                    # Entry point to start the server
-└── uni_course_sphere_homepage.html  # Static HTML homepage file
+│   │   └── envconfig.js            # Loads MySQL credentials from .env
+│   │   └── mysql.js                # Creates MySQL pool connection
+│   └── server.js                   # Express server setup and route registration
+├── test/                           # Unit & integration tests
+│   └── course.search.test.js       # Tests for course search endpoints
+│   └── db.connection.test.js       # Tests MySQL database connectivity
+│   └── server.test.js              # General server endpoint tests
+│   └── featured-courses.test.js    # Tests for featured courses API
+│   └── home.test.js                # Tests for home route
+│   └── search.test.js              # Tests for search API endpoints
+│   └── teardown.test.js            # Cleanup tests / reset DB after tests
+├── routes/                         # Express route modules
+│   └── featured-courses.js         # API endpoint for featured courses
+│   └── home.js                     # Home page route
+│   └── search.js                   # Search API endpoint
+├── .env                            # Local environment variables (not tracked)
+├── .gitignore                      # Ignore node_modules, .env, and other files
+├── resources/                      # Documentation and guides
+│   └── dev-guide.md                # Developer-focused setup & workflow guide
+│   └── team-resources.md           # Internal team documentation
+│   └── user-guide.md               # User-facing manual (setup & usage)
+├── constants.js                    # Central constants used throughout the project
+├── eslint.config.mjs               # ESLint config for code style/linting
+├── package-lock.json               # Auto-generated Node dependency lockfile
+├── package.json                    # Node project metadata and scripts
+├── README.md                       # Project-level documentation
+├── server.js                       # Entry point for the server (runs Express app)
+└── uni_course_sphere_homepage.html # Static homepage HTML file
+
 ```
 
-**Notes for developers:**
+## Notes for developers
 
-- The _src/_ directory contains all core server and database logic.
-- The _database/_ folder holds SQL scripts for creating and seeding the database.
-- The _resource/_ contains all project documentation.
-- The root _server.js_ is the entry point used by npm start.
-- The _.env_ file must be created locally using the _.env.example_ template inside _src/config/_.
+- The **src/** directory contains all core server and database logic:
+  - `server.js` — sets up and runs the Express app.
+  - `db/` — contains MySQL connection logic (`mysql.js`) and environment variable loader (`envconfig.js`).
+  - `config/` — holds the `.env.example` template for environment variables.
+- The **database/** folder holds SQL scripts for creating and seeding the database:
+  - `schema.sql` — database schema definitions.
+  - `dev_setup.sql` — creates the database, tables, and default development data.
+  - `dev_seed.sql` — additional sample data for testing.
+- The **routes/** folder contains all Express route modules (`home.js`, `search.js`, `featured-courses.js`).
+- The **test/** folder contains unit and integration tests for server routes, database connectivity, and API endpoints.
+- The **resources/** folder contains all project documentation:
+  - `user-guide.md` — manual for end-users.
+  - `dev-guide.md` — developer setup and workflow guide.
+  - `team-resources.md` — internal team documentation.
+- The root **server.js** file is the entry point used by `npm start`.
+- The **.env** file must be created locally using the `.env.example` template inside `src/config/`.
+- The **uni_course_sphere_homepage.html** file is the static homepage served at `/` for the application.
 
-### 3. Set Up Environment
+### 3. MySQL Database Setup
 
 - It is important that you set up your own environment variables before you proceed with any tests, especially running tests for MySQL.
 - **If you do not set this up first, local tests will fail and build will fail.**
 
-1. Copy the example .env file to the root of the project:
+  To set up MySQL for local development:
+
+1. Open a terminal and log in as root:
 
 ```sh
-cp src/config/.env.example .env
+mysql -u root -p
 ```
 
-2. Open the .env in your editor and fill in the correct credentials for your MySQL database:
+2. Run the database setup script:
+
+```sh
+SOURCE ./database/dev_setup.sql
+```
+
+3. Exit MySQL:
+
+```sh
+EXIT;
+```
+
+4. Update .env with your MySQL credentials:
 
 ```sh
 MYSQL_HOST=127.0.0.1
 MYSQL_PORT=3306
 MYSQL_DB=unicourse_min
-MYSQL_USER=
-MYSQL_PASSWORD=
+MYSQL_USER=root
+MYSQL_PASSWORD=your_password
 ```
 
 **Note:** These values must match your local database setup, otherwise the server and tests will fail.
 
-3. **Important:** .env is not tracked by Git, so each developer must create their own copy from .env.example.
+5. **Important:** .env is not tracked by Git, so each developer must create their own copy from .env.example.
 
-### 3. Build Instructions
+### 4. Build Instructions
 
 1. Install Node.js (v18+) and MySQL.
 2. Install project dependecies:
@@ -98,7 +133,7 @@ npm install
 npm start
 ```
 
-### 4. Testing
+### 5. Testing
 
 - All tests are located in the _/test/_ directory
 - Run tests using:
@@ -115,7 +150,7 @@ npm run lint
 npm run lint:fix
 ```
 
-### 5. Adding New Tests
+### 6. Adding New Tests
 
 All automated tests must be written using **Mocha/Chai** and placed in the `/test` directory.  
 Each test file must follow the naming convention: `*.test.js`
@@ -124,54 +159,95 @@ Each test file must follow the naming convention: `*.test.js`
 
 - Place all new tests inside the `/test/` directory.
 - Name the file after the module or feature being tested  
-  (e.g. `server.test.js`, `course.search.test.js`)
-- Use Mocha’s `describe()` and `it()` blocks
-- Always clean up resources (e.g. close server connections)
-- Use a separate port for test servers to avoid conflicts
+  (e.g., `server.test.js`, `course.search.test.js`, `featured-courses.test.js`).
+- Use Mocha’s `describe()` and `it()` blocks for organizing test suites and individual tests.
+- For server-related tests:
+  - Use `startTestServer(port, appInstance)` to spin up the server.
+  - Use `stopTestServer(server)` to properly shut down the server after tests.
+  - Assign a unique port for each test file to prevent conflicts.
+- For generic (non-server) tests, directly assert functionality using Node.js `assert` or your preferred assertion library.
+- Always clean up resources (e.g., close server connections, clear database state if needed) to ensure tests are independent.
+- Keep tests readable and modular; separate generic logic tests from API/endpoint tests.
+- Seed test data in `before()` hooks when needed and clean up in `after()` hooks.
 
 #### Example: Dummy Test File
 
 ```js
 /**
  * @file dummy.test.js
- * @description Example test file demonstrating structure and coding style
- *              for UniCourse Sphere tests
+ * @description Example test file demonstrating generic and server-related tests
+ *              for UniCourse Sphere using server.test.js helpers
  */
 
 import assert from "assert";
-import http from "http";
-import { createServer } from "../src/server.js";
+import { startTestServer, stopTestServer } from "./server.test.js"; // <--- use helpers
+import { createServer } from "../server.js";
 
 describe("Dummy Test Suite", function () {
-  let server;
-  const PORT = 3002;
-
-  before(function (done) {
-    server = http.createServer(createServer()).listen(PORT, done);
+  // ------------------------------
+  // Generic Tests (no server)
+  // ------------------------------
+  it("should add numbers correctly", function () {
+    assert.strictEqual(2 + 3, 5);
   });
 
-  after(function (done) {
-    server.close(done);
+  it("should handle array push/pop correctly", function () {
+    const arr = [];
+    arr.push(1);
+    arr.push(2);
+    assert.strictEqual(arr.length, 2);
+    assert.strictEqual(arr.pop(), 2);
+    assert.strictEqual(arr.length, 1);
+  });
+
+  it("should uppercase a string", function () {
+    const str = "unicorn";
+    assert.strictEqual(str.toUpperCase(), "UNICORN");
+  });
+
+  it("should verify object properties", function () {
+    const obj = { name: "Alice", age: 25 };
+    assert.strictEqual(obj.name, "Alice");
+    assert.ok("age" in obj);
+  });
+
+  it("should resolve a promise correctly", async function () {
+    const asyncFunc = () => Promise.resolve(42);
+    const result = await asyncFunc();
+    assert.strictEqual(result, 42);
+  });
+
+  // ------------------------------
+  // Server-related Tests
+  // ------------------------------
+  let server, url;
+  const PORT = 3002;
+
+  before(async function () {
+    ({ server, url } = await startTestServer(PORT, createServer()));
+  });
+
+  after(async function () {
+    await stopTestServer(server);
   });
 
   it("should return empty array for empty search query", function (done) {
-    http.get(`http://localhost:${PORT}/api/search?q=`, (res) => {
+    const http = await import("http");
+    http.get(`${url}/api/search?q=`, (res) => {
       assert.strictEqual(res.statusCode, 200);
-
       let body = "";
       res.on("data", (chunk) => (body += chunk));
       res.on("end", () => {
-        const json = JSON.parse(body);
-        assert.deepStrictEqual(json, []);
+        assert.deepStrictEqual(JSON.parse(body), []);
         done();
       });
     });
   });
 
   it("should return 404 for unknown endpoint", function (done) {
-    http.get(`http://localhost:${PORT}/nonexistent`, (res) => {
+    const http = await import("http");
+    http.get(`${url}/nonexistent`, (res) => {
       assert.strictEqual(res.statusCode, 404);
-
       let body = "";
       res.on("data", (chunk) => (body += chunk));
       res.on("end", () => {
@@ -183,7 +259,7 @@ describe("Dummy Test Suite", function () {
 });
 ```
 
-## 6. Reporting a Bug
+## 7. Reporting a Bug
 
 If you encounter a bug:
 
@@ -199,13 +275,13 @@ If you encounter a bug:
 
 3. Resources for writing a good bug report:
 
-    [How to Write a Good Bug Report](https://marker.io/blog/how-to-write-bug-report)
+   [How to Write a Good Bug Report](https://marker.io/blog/how-to-write-bug-report)
 
-    [How to Write A Good Bug Report?](https://www.geeksforgeeks.org/software-testing/how-to-write-a-good-bug-report/)
+   [How to Write A Good Bug Report?](https://www.geeksforgeeks.org/software-testing/how-to-write-a-good-bug-report/)
 
-    [Bug Writing Guidelines](https://bugzilla.mozilla.org/page.cgi?id=bug-writing.html)
+   [Bug Writing Guidelines](https://bugzilla.mozilla.org/page.cgi?id=bug-writing.html)
 
-### 7. Building A Release
+### 8. Building A Release
 
 - Ensure all dependencies are up to date:
 
