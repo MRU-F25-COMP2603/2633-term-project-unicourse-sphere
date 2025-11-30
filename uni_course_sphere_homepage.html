@@ -242,50 +242,8 @@
       <section aria-labelledby="featured" style="margin-top: 20px">
         <h2 id="featured">Featured courses</h2>
         <div class="card-grid" id="featured-grid">
-          <!-- sample course cards -->
-          <article class="course-card" tabindex="0">
-            <div class="course-title">
-              COMP 2633 — Foundations of Software Engineering
-            </div>
-            <div class="meta">Department: Computing • Level: 2000</div>
-            <p style="margin: 0 0 8px; color: var(--muted); font-size: 14px">
-              Software life cycles models. Software process improvement. Goals
-              and methods for requirements analysis and specification, software
-              design, implementation, integration and testing of software.
-            </p>
-            <a href="#" aria-label="View COMP2633 details">View details →</a>
-          </article>
-
-          <article class="course-card" tabindex="0">
-            <div class="course-title">
-              MATH 1203 — Linear Algebra for Scientists and Engineers
-            </div>
-            <div class="meta">Department: Mathematics • Level: 1000</div>
-            <p style="margin: 0 0 8px; color: var(--muted); font-size: 14px">
-              Introduction to linear algebra for science students. Topics
-              covered are vector and matrix algebra, systems of linear
-              equations, determinants, linear transformations, polar coordinates
-              and complex numbers.
-            </p>
-            <a href="#">View details →</a>
-          </article>
-
-          <article class="course-card" tabindex="0">
-            <div class="course-title">
-              COMP1501 — Programming I: Introduction to Problem Solving and
-              Programming
-            </div>
-            <div class="meta">Department: Computing • Level: 1000</div>
-            <p style="margin: 0 0 8px; color: var(--muted); font-size: 14px">
-              The course emphasizes the design of fundamental algorithmic
-              solutions and the implementation of those solutions in a visual
-              development environment.
-            </p>
-            <a href="#">View details →</a>
-          </article>
+          <!-- Featured courses will be dynamically inserted here -->
         </div>
-      </section>
-
       <section aria-labelledby="prof-spot" style="margin-top: 22px">
         <h2 id="prof-spot">Professor spotlight</h2>
         <div
@@ -409,6 +367,36 @@
           dropdown.style.display = "none";
         }
       });
+
+      async function loadFeaturedCourses() {
+        const container = document.getElementById("featured-grid");
+        try {
+          const res = await fetch("/api/featured");
+          const courses = await res.json();
+
+          container.innerHTML = courses
+            .map(
+              (course) => `
+        <article class="course-card" tabindex="0">
+          <div class="course-title">${course.code} — ${course.title}</div>
+          <div class="meta">Department: ${course.category}</div>
+          <p style="margin: 0 0 8px; color: var(--muted); font-size: 14px">
+            ${course.description}
+          </p>
+          <a href="#" aria-label="View ${course.code} details">View details →</a>
+        </article>
+      `
+            )
+            .join("");
+        } catch (err) {
+          container.innerHTML =
+            "<p style='color:red'>Failed to load featured courses.</p>";
+          console.error(err);
+        }
+      }
+
+      // Load on page load
+      loadFeaturedCourses();
     </script>
   </body>
 </html>

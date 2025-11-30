@@ -2,6 +2,7 @@ import express from "express";
 import * as CONSTANTS from "./constants.js";
 import { createHomeRouter } from "./routes/home.js";
 import { createSearchRouter } from "./routes/search.js";
+import { createFeaturedCoursesRouter } from "./routes/featured-courses.js";
 
 export function createServer() {
   const app = express();
@@ -10,6 +11,7 @@ export function createServer() {
   // Mount routers
   app.use("/", createHomeRouter());
   app.use("/api/search", createSearchRouter());
+  app.use("/api/featured", createFeaturedCoursesRouter());
 
   // 404 handler
   app.use((req, res) => {

@@ -10,7 +10,7 @@
   "scripts": {
     "start": "node server.js",
     "pretest": "npx eslint . --fix",
-    "test": "mocha \"test/**/*.test.js\" --timeout 10000",
+    "test": "mocha \"test/**/*.test.js\" --timeout 10000 --exit",
     "lint": "npx eslint .",
     "lint:fix": "npx eslint . --fix"
   },
