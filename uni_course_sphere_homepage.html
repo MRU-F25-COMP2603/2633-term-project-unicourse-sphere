@@ -175,14 +175,34 @@
             class="search"
             role="search"
             onsubmit="event.preventDefault(); performSearch();"
+            style="position: relative"
           >
             <input
               id="search-input"
               type="search"
               placeholder="Search by course code, title, or professor (e.g., COMP1501, Programming, Apoorve)"
               aria-label="Search courses"
+              autocomplete="off"
+              oninput="performSearch()"
             />
+            <!-- Dropdown container -->
             <button type="submit">Search</button>
+            <div
+              id="search-dropdown"
+              style="
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                z-index: 1000;
+                background: white;
+                border: 1px solid #e5e7eb;
+                border-top: none;
+                max-height: 300px;
+                overflow-y: auto;
+                display: none;
+              "
+            ></div>
           </form>
 
           <div class="filters" id="filters">
@@ -324,63 +344,70 @@
       </div>
     </footer>
 
+    <form
+      class="search"
+      role="search"
+      onsubmit="event.preventDefault(); performSearch();"
+    >
+      <input
+        id="search-input"
+        type="search"
+        placeholder="Search..."
+        autocomplete="off"
+        oninput="performSearch()"
+      />
+      <button type="submit">Search</button>
+      <div id="search-dropdown"></div>
+    </form>
+
     <script>
       async function performSearch() {
         const q = document.getElementById("search-input").value.trim();
-        const results = document.getElementById("search-results");
+        const dropdown = document.getElementById("search-dropdown");
 
         if (!q) {
-          results.innerHTML =
-            '<div style="color:var(--muted)">Enter a course code, title, or professor name to search.</div>';
+          dropdown.style.display = "none";
           return;
         }
 
-        try {
-          const response = await fetch(
-            `/api/search?q=${encodeURIComponent(q)}`
-          );
-          const data = await response.json();
+        const response = await fetch(`/api/search?q=${encodeURIComponent(q)}`);
+        const data = await response.json();
 
-          if (data.length === 0) {
-            results.innerHTML =
-              '<div style="color:var(--muted)">No results found.</div>';
-            return;
-          }
-
-          // Render results
-          results.innerHTML = data
-            .map(
-              (course) => `
-      <div class="course-card" style="margin-bottom:12px">
-        <div class="course-title">${escapeHtml(course.code)} — ${escapeHtml(course.title)}</div>
-        ${course.professor ? `<div class="meta">Professor: ${escapeHtml(course.professor)}</div>` : ""}
-        ${course.description ? `<div class="meta">${escapeHtml(course.description)}</div>` : ""}
-      </div>
-    `
-            )
-            .join("");
-        } catch (err) {
-          console.error(err);
-          results.innerHTML =
-            '<div style="color:red">Error: Could not fetch search results.</div>';
+        if (!data.length) {
+          dropdown.innerHTML =
+            "<div style='padding:8px;color:var(--muted)'>No results found</div>";
+          dropdown.style.display = "block";
+          return;
         }
-      }
 
-      function escapeHtml(s) {
-        return s.replace(/[&<>\"']/g, function (c) {
-          return {
-            "&": "&amp;",
-            "<": "&lt;",
-            ">": "&gt;",
-            '"': "&quot;",
-            "'": "&#39;",
-          }[c];
+        dropdown.innerHTML = data
+          .map(
+            (course) => `
+    <div class="dropdown-item" style="padding:8px;cursor:pointer;">
+      ${course.code} — ${course.title} ${course.professor ? `(${course.professor})` : ""}
+    </div>
+  `
+          )
+          .join("");
+
+        dropdown.style.display = "block";
+
+        // Add click handlers for each item
+        Array.from(dropdown.children).forEach((el, idx) => {
+          el.addEventListener("click", () => {
+            document.getElementById("search-input").value = data[idx].code;
+            dropdown.style.display = "none";
+            performSearch(); // optional: trigger full search
+          });
         });
       }
 
-      // Accessibility: focus search box on load
-      window.addEventListener("load", () => {
-        document.getElementById("search-input").focus();
+      // Hide dropdown when clicking outside
+      document.addEventListener("click", (e) => {
+        const dropdown = document.getElementById("search-dropdown");
+        if (!dropdown.contains(e.target) && e.target.id !== "search-input") {
+          dropdown.style.display = "none";
+        }
       });
     </script>
   </body>
