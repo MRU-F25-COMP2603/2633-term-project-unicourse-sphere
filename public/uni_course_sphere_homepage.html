@@ -314,8 +314,7 @@
         Array.from(dropdown.children).forEach((el, idx) => {
           el.addEventListener("click", () => {
             const courseCode = data[idx].code;
-            // Redirect to the course details page (adjust the URL format as needed)
-            window.location.href = `/courses/${courseCode}`;
+            window.location.href = `/courses/${courseCode}?courseCode=${encodeURIComponent(courseCode)}`;
           });
         });
       }

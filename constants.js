@@ -6,7 +6,7 @@ export const STATUS_NOT_FOUND = 404;
 export const STATUS_DB_QUERY_FAILED = 500;
 
 // Default File Name
-export const FILE_NAME = "uni_course_sphere_homepage.html";
+export const FILE_NAME = "./public/uni_course_sphere_homepage.html";
 
 // Error Messages
 export const ERR_MSG_FILE_NF = "Error: File Not Found";
