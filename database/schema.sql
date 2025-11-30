@@ -25,7 +25,8 @@ CREATE TABLE courses (
   code        VARCHAR(32)  NOT NULL UNIQUE,
   title       VARCHAR(255) NOT NULL,
   description TEXT NULL,
-  category    VARCHAR(255) NULL
+  category    VARCHAR(255) NULL,
+  level       VARCHAR(32) NULL
 );
 
 

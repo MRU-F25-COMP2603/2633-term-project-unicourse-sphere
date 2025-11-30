@@ -4,6 +4,7 @@ import { createHomeRouter } from "./routes/home.js";
 import { createSearchRouter } from "./routes/search.js";
 import { createFeaturedCoursesRouter } from "./routes/featured-courses.js";
 import { createProfessorSpotlightRouter } from "./routes/professor-spotlight.js";
+import { createCoursesRouter } from "./routes/courses.js";
 
 export function createServer() {
   const app = express();
@@ -14,6 +15,7 @@ export function createServer() {
   app.use("/api/search", createSearchRouter());
   app.use("/api/featured", createFeaturedCoursesRouter());
   app.use("/api/professors", createProfessorSpotlightRouter());
+  app.use("/courses", createCoursesRouter());
 
   // 404 handler
   app.use((req, res) => {

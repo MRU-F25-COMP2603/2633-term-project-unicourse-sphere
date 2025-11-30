@@ -33,8 +33,8 @@ describe("Featured Courses Router", function () {
   /**
    * @test
    * @description Verifies that the `/api/featured` endpoint returns a valid array of courses.
-   * @query "SELECT course_id, code, title, description, category FROM courses ORDER BY RAND() LIMIT 3"
-   * @expectedResult Returns an array of up to 3 course objects, each containing code, title, description, and category.
+   * @query "SELECT course_id, code, title, description, category, level FROM courses ORDER BY RAND() LIMIT 3"
+   * @expectedResult Returns an array of up to 3 course objects, each containing code, title, description, category, and level.
    */
   it("should return 200 and an array of courses", function (done) {
     http.get(`${url}/api/featured`, (res) => {
@@ -53,6 +53,7 @@ describe("Featured Courses Router", function () {
           assert.ok(course.title, "Course should have title");
           assert.ok(course.description, "Course should have description");
           assert.ok(course.category, "Course should have category");
+          assert.ok(course.level, "Course should have level");
         }
 
         done();

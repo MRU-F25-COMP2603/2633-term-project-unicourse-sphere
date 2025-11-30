@@ -8,7 +8,7 @@ export function createFeaturedCoursesRouter() {
   router.get("/", async (req, res) => {
     try {
       const [rows] = await pool.query(
-        `SELECT course_id, code, title, description, category
+        `SELECT course_id, code, title, description, category, level
          FROM courses
          ORDER BY RAND()
          LIMIT 3`,

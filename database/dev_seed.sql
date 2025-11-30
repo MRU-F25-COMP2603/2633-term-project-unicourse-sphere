@@ -9,25 +9,28 @@ INSERT INTO users (email, password_hash, role) VALUES
 
 -- 1. Profiles
 INSERT INTO profiles (user_id, display_name) VALUES
-  (1, 'Mentor One'),
-  (2, 'Student One');
+  (1, 'mbaut981'),
+  (2, 'lmena909');
 
 -- 2. Courses
-INSERT INTO courses (code, title, description, category) VALUES
+INSERT INTO courses (code, title, description, category, level) VALUES
   ('COMP 2633', 
    'Foundations of Software Engineering', 
    'Software life cycles models. Software process improvement. Goals and methods for requirements analysis and specification, software design, implementation, integration and testing of software.', 
-   'Computing'),
+   'Computing',
+   '2000'),
 
   ('MATH 1203', 
    'Linear Algebra for Scientists and Engineers', 
    'Introduction to linear algebra for science students. Topics covered are vector and matrix algebra, systems of linear equations, determinants, linear transformations, polar coordinates and complex numbers.', 
-   'Mathematics'),
+   'Mathematics',
+   "1000"),
 
   ('COMP 1501', 
    'Programming I: Introduction to Problem Solving and Programming', 
    'The course emphasizes the design of fundamental algorithmic solutions and the implementation of those solutions in a visual development environment.', 
-   'Computing');
+   'Computing',
+   '1000');
 
 -- 3. Professors (include department!)
 INSERT INTO professors (name, department, bio, email) VALUES
@@ -54,7 +57,10 @@ INSERT INTO enrollments (user_id, course_id, role_in_course) VALUES
   (1, 1, 'mentor'),
   (2, 1, 'student');
 
--- 6. Ratings
--- Optional sample rating
+-- 6. Mentor Pairs (Create the mentor-student relationship for COMP 2633)
+INSERT INTO mentor_pairs (course_id, mentor_id, mentee_id) 
+VALUES (1, 1, 2);
+
+-- 7. Ratings (Optional sample rating)
 INSERT INTO ratings (user_id, course_id, rating, comment) VALUES
   (2, 1, 5, 'Great course!');

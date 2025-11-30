@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>UniCourse Sphere — Course Details</title>
+    <meta
+      name="description"
+      content="Course details, professor info, and mentors"
+    />
+    <style>
+      /* Styles as before */
+    </style>
+  </head>
+  <body>
+    <header>
+      <!-- Header Content -->
+    </header>
+
+    <main>
+      <section class="course-details">
+        <h1 class="course-title" id="course-title"></h1>
+        <div class="course-meta" id="course-meta"></div>
+        <p class="course-description" id="course-description"></p>
+        <div class="course-professor" id="course-professor"></div>
+        <div class="course-mentor" id="course-mentor"></div>
+      </section>
+    </main>
+
+    <footer>
+      <!-- Footer Content -->
+    </footer>
+
+    <script>
+      async function loadCourseDetails() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const courseCode = urlParams.get("courseCode");
+
+        if (!courseCode) {
+          alert("Course code not found");
+          return;
+        }
+
+        try {
+          const res = await fetch(`/api/courses/${courseCode}`);
+          const course = await res.json();
+
+          if (!course) {
+            alert("Course details not found");
+            return;
+          }
+
+          // Populate page with course details
+          document.getElementById("course-title").textContent =
+            `${course.code} — ${course.title}`;
+          document.getElementById("course-meta").textContent =
+            `Department: ${course.department} • Level: ${course.level}`;
+          document.getElementById("course-description").textContent =
+            course.description;
+          document.getElementById("course-professor").textContent =
+            `Professor: ${course.professor}`;
+          document.getElementById("course-mentor").textContent =
+            `Mentor: ${course.mentor}`;
+        } catch (err) {
+          console.error(err);
+          alert("Failed to load course details");
+        }
+      }
+
+      // Load course details on page load
+      window.onload = loadCourseDetails;
+    </script>
+  </body>
+</html>
