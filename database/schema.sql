@@ -22,10 +22,13 @@ CREATE TABLE users (
 -- 2) COURSES (catalog)
 CREATE TABLE courses (
   course_id   BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  code        VARCHAR(32)  NOT NULL UNIQUE,  -- e.g., "COMP 2603"
+  code        VARCHAR(32)  NOT NULL UNIQUE,
   title       VARCHAR(255) NOT NULL,
-  description TEXT NULL
+  description TEXT NULL,
+  category    VARCHAR(255) NULL,
+  level       VARCHAR(32) NULL
 );
+
 
 -- 3) ENROLLMENTS (who is in which course)
 -- Keep it simple: one row per (user, course) with a role label
@@ -74,6 +77,57 @@ CREATE TABLE mentor_pairs (
     ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+-- 6) PROFILES
+CREATE TABLE profiles (
+  profile_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  user_id    BIGINT UNSIGNED NOT NULL UNIQUE,
+  display_name VARCHAR(255) NOT NULL,
+  CONSTRAINT fk_profiles_user FOREIGN KEY (user_id)
+    REFERENCES users(user_id)
+    ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- 7) PROFESSORS
+CREATE TABLE professors (
+  professor_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  name        VARCHAR(255) NOT NULL,
+  department  VARCHAR(255) NOT NULL,
+  bio         TEXT,
+  email       VARCHAR(255) NOT NULL UNIQUE
+);
+
+
+-- 8) COURSE PROFESSORS (Mapping)
+CREATE TABLE course_professors (
+  course_id    BIGINT UNSIGNED NOT NULL,
+  professor_id BIGINT UNSIGNED NOT NULL,
+  role VARCHAR(64) NOT NULL,
+  PRIMARY KEY (course_id, professor_id),
+  CONSTRAINT fk_cp_course FOREIGN KEY (course_id)
+    REFERENCES courses(course_id)
+    ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT fk_cp_prof FOREIGN KEY (professor_id)
+    REFERENCES professors(professor_id)
+    ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- 9) RATINGS
+CREATE TABLE ratings (
+  rating_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  user_id   BIGINT UNSIGNED NOT NULL,
+  course_id BIGINT UNSIGNED NOT NULL,
+  rating    INT NOT NULL,
+  comment   TEXT,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_rt_user FOREIGN KEY (user_id)
+    REFERENCES users(user_id)
+    ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT fk_rt_course FOREIGN KEY (course_id)
+    REFERENCES courses(course_id)
+    ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+
 -- Minimal indexes to keep lookups snappy
 CREATE INDEX idx_users_email   ON users(email);
 CREATE INDEX idx_courses_code  ON courses(code);
@@ -84,6 +138,7 @@ CREATE INDEX idx_mr_status     ON mentor_requests(status);
 
 -- OPTIONAL: Quick smoke test for local development only
 -- Comment out or remove this section in production.
+/*
 
 -- Seed two users and a course
 INSERT INTO users(email,password_hash,role) VALUES
@@ -102,6 +157,7 @@ VALUES (1,1,2);
 INSERT INTO mentor_pairs(course_id, mentor_id, mentee_id) VALUES (1,2,1);
 UPDATE mentor_requests SET status='matched' WHERE request_id=1;
 
+
 -- Optional verification queries (keep commented)
 
 SHOW TABLES;
@@ -111,3 +167,4 @@ SELECT * FROM courses;
 SELECT * FROM enrollments;
 SELECT * FROM mentor_requests;
 SELECT * FROM mentor_pairs;
+*/

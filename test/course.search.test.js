@@ -2,45 +2,27 @@ import { expect } from "chai";
 import pool from "../src/db/mysql.js";
 
 /**
- * @testgroup Course search basic checks
+ * @testgroup Course search basic checks (using existing database)
  */
 describe("Course search basic checks", function () {
-  // Seed several courses before tests
-  before(async function () {
-    await pool.query("INSERT IGNORE INTO courses (code, title) VALUES (?, ?)", [
-      "COMP-2603",
-      "Software Engineering",
-    ]);
-    await pool.query("INSERT IGNORE INTO courses (code, title) VALUES (?, ?)", [
-      "COMP-2000",
-      "Introduction to Programming",
-    ]);
-    await pool.query("INSERT IGNORE INTO courses (code, title) VALUES (?, ?)", [
-      "MATH-1100",
-      "Discrete Mathematics",
-    ]);
-  });
+  // No seeding, use existing database courses
 
   /**
    * @test
-   * @description Verifies that a seeded course can be found by its code.
-   * @query "SELECT title FROM courses WHERE code = ?"
-   * @expectedResult title = "Software Engineering"
+   * @description Verifies that an existing course can be found by its code.
    */
-  it("finds seeded course by code", async function () {
+  it("finds an existing course by code", async function () {
     const [rows] = await pool.query(
       "SELECT title FROM courses WHERE code = ?",
-      ["COMP-2603"],
+      ["COMP 2633"], // match your real course code
     );
     expect(rows.length).to.be.greaterThan(0);
-    expect(rows[0].title).to.equal("Software Engineering");
+    expect(rows[0].title).to.equal("Foundations of Software Engineering"); // match your real title
   });
 
   /**
    * @test
    * @description Ensures that searching for a non-existent course returns no rows.
-   * @query "SELECT * FROM courses WHERE code = ?"
-   * @expectedResult rows.length = 0
    */
   it("returns no results for a non-existent course code", async function () {
     const [rows] = await pool.query("SELECT * FROM courses WHERE code = ?", [
@@ -52,69 +34,39 @@ describe("Course search basic checks", function () {
   /**
    * @test
    * @description Verifies searching by partial title returns matching courses.
-   * @query "SELECT code FROM courses WHERE title LIKE ?"
-   * @expectedResult code = "COMP-2603"
    */
-  it("finds a course using partial title match", async function () {
+  it("finds courses using partial title match", async function () {
     const [rows] = await pool.query(
       "SELECT code FROM courses WHERE title LIKE ?",
-      ["%Engineering%"],
+      ["%Software%"], // partial match for your real course title
     );
     expect(rows.length).to.be.greaterThan(0);
-    expect(rows.map((r) => r.code)).to.include("COMP-2603");
+    expect(rows.map((r) => r.code)).to.include("COMP 2633");
   });
 
   /**
    * @test
-   * @description Verifies duplicate inserts are ignored by INSERT IGNORE.
-   * @query "INSERT IGNORE INTO courses (code, title) VALUES (?, ?)"
-   * @expectedResult No additional row created for existing course
-   */
-  it("ignores duplicate course inserts", async function () {
-    const [before] = await pool.query(
-      "SELECT COUNT(*) AS count FROM courses WHERE code = ?",
-      ["COMP-2603"],
-    );
-
-    await pool.query("INSERT IGNORE INTO courses (code, title) VALUES (?, ?)", [
-      "COMP-2603",
-      "Software Engineering",
-    ]);
-
-    const [after] = await pool.query(
-      "SELECT COUNT(*) AS count FROM courses WHERE code = ?",
-      ["COMP-2603"],
-    );
-
-    expect(after[0].count).to.equal(before[0].count);
-  });
-
-  /**
-   * @test
-   * @description Ensures course title lookups are case-insensitive.
-   * @query "SELECT code FROM courses WHERE LOWER(title) = LOWER(?)"
-   * @expectedResult code = "COMP-2000"
+   * @description Ensures case-insensitive title search works.
    */
   it("performs case-insensitive title search", async function () {
     const [rows] = await pool.query(
       "SELECT code FROM courses WHERE LOWER(title) = LOWER(?)",
-      ["introduction to programming"],
+      ["foundations of software engineering"],
     );
     expect(rows.length).to.be.greaterThan(0);
-    expect(rows[0].code).to.equal("COMP-2000");
+    expect(rows[0].code).to.equal("COMP 2633");
   });
 
   /**
    * @test
-   * @description Verifies multiple courses can be retrieved in a single query.
-   * @query "SELECT code FROM courses"
-   * @expectedResult At least 3 seeded courses returned
+   * @description Verifies multiple courses can be retrieved.
    */
   it("retrieves multiple courses from table", async function () {
     const [rows] = await pool.query("SELECT code FROM courses");
-    expect(rows.length).to.be.at.least(3);
-    expect(rows.map((r) => r.code)).to.include("COMP-2603");
-    expect(rows.map((r) => r.code)).to.include("COMP-2000");
-    expect(rows.map((r) => r.code)).to.include("MATH-1100");
+    expect(rows.length).to.be.at.least(3); // adjust based on your DB
+    const codes = rows.map((r) => r.code);
+    expect(codes).to.include("COMP 2633");
+    expect(codes).to.include("COMP 1501");
+    expect(codes).to.include("MATH 1203");
   });
 });

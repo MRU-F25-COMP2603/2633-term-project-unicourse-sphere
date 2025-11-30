@@ -9,7 +9,6 @@
       content="Find course descriptions, prerequisites, professor info and more."
     />
     <style>
-      /* Basic, lightweight styles for a first-draft homepage */
       :root {
         --accent: #2b6cb0;
         --muted: #6b7280;
@@ -175,14 +174,34 @@
             class="search"
             role="search"
             onsubmit="event.preventDefault(); performSearch();"
+            style="position: relative"
           >
             <input
               id="search-input"
               type="search"
               placeholder="Search by course code, title, or professor (e.g., COMP1501, Programming, Apoorve)"
               aria-label="Search courses"
+              autocomplete="off"
+              oninput="performSearch()"
             />
+            <!-- Dropdown container -->
             <button type="submit">Search</button>
+            <div
+              id="search-dropdown"
+              style="
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                z-index: 1000;
+                background: white;
+                border: 1px solid #e5e7eb;
+                border-top: none;
+                max-height: 300px;
+                overflow-y: auto;
+                display: none;
+              "
+            ></div>
           </form>
 
           <div class="filters" id="filters">
@@ -222,96 +241,17 @@
       <section aria-labelledby="featured" style="margin-top: 20px">
         <h2 id="featured">Featured courses</h2>
         <div class="card-grid" id="featured-grid">
-          <!-- sample course cards -->
-          <article class="course-card" tabindex="0">
-            <div class="course-title">
-              COMP 2633 — Foundations of Software Engineering
-            </div>
-            <div class="meta">Department: Computing • Level: 2000</div>
-            <p style="margin: 0 0 8px; color: var(--muted); font-size: 14px">
-              Software life cycles models. Software process improvement. Goals
-              and methods for requirements analysis and specification, software
-              design, implementation, integration and testing of software.
-            </p>
-            <a href="#" aria-label="View COMP2633 details">View details →</a>
-          </article>
-
-          <article class="course-card" tabindex="0">
-            <div class="course-title">
-              MATH 1203 — Linear Algebra for Scientists and Engineers
-            </div>
-            <div class="meta">Department: Mathematics • Level: 1000</div>
-            <p style="margin: 0 0 8px; color: var(--muted); font-size: 14px">
-              Introduction to linear algebra for science students. Topics
-              covered are vector and matrix algebra, systems of linear
-              equations, determinants, linear transformations, polar coordinates
-              and complex numbers.
-            </p>
-            <a href="#">View details →</a>
-          </article>
-
-          <article class="course-card" tabindex="0">
-            <div class="course-title">
-              COMP1501 — Programming I: Introduction to Problem Solving and
-              Programming
-            </div>
-            <div class="meta">Department: Computing • Level: 1000</div>
-            <p style="margin: 0 0 8px; color: var(--muted); font-size: 14px">
-              The course emphasizes the design of fundamental algorithmic
-              solutions and the implementation of those solutions in a visual
-              development environment.
-            </p>
-            <a href="#">View details →</a>
-          </article>
+          <!-- Featured courses will be dynamically inserted here -->
         </div>
       </section>
 
       <section aria-labelledby="prof-spot" style="margin-top: 22px">
         <h2 id="prof-spot">Professor spotlight</h2>
         <div
+          id="professor-grid"
           style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 12px"
         >
-          <div
-            style="
-              background: white;
-              padding: 12px;
-              border-radius: 10px;
-              border: 1px solid #eef2f6;
-              min-width: 220px;
-            "
-          >
-            <div style="font-weight: 700">Prof. Apoorve Chokshi</div>
-            <div
-              style="color: var(--muted); font-size: 13px; margin-bottom: 8px"
-            >
-              Department: Computing
-            </div>
-            <p style="margin: 0; font-size: 13px; color: var(--muted)">
-              Teaches across both the BCIS and Computer Science programs,
-              including programming, game development, and software engineering
-              principles.
-            </p>
-          </div>
-
-          <div
-            style="
-              background: white;
-              padding: 12px;
-              border-radius: 10px;
-              border: 1px solid #eef2f6;
-              min-width: 220px;
-            "
-          >
-            <div style="font-weight: 700">Prof. Mark Robinson</div>
-            <div
-              style="color: var(--muted); font-size: 13px; margin-bottom: 8px"
-            >
-              Department: Mathematics
-            </div>
-            <p style="margin: 0; font-size: 13px; color: var(--muted)">
-              Known for clear lectures and practical problem sets.
-            </p>
-          </div>
+          <!-- Spotlight professors will be dynamically inserted here -->
         </div>
       </section>
     </main>
@@ -324,64 +264,118 @@
       </div>
     </footer>
 
+    <form
+      class="search"
+      role="search"
+      onsubmit="event.preventDefault(); performSearch();"
+    >
+      <input
+        id="search-input"
+        type="search"
+        placeholder="Search..."
+        autocomplete="off"
+        oninput="performSearch()"
+      />
+      <button type="submit">Search</button>
+      <div id="search-dropdown"></div>
+    </form>
+
     <script>
       async function performSearch() {
         const q = document.getElementById("search-input").value.trim();
-        const results = document.getElementById("search-results");
+        const dropdown = document.getElementById("search-dropdown");
 
         if (!q) {
-          results.innerHTML =
-            '<div style="color:var(--muted)">Enter a course code, title, or professor name to search.</div>';
+          dropdown.style.display = "none";
           return;
         }
 
-        try {
-          const response = await fetch(
-            `/api/search?q=${encodeURIComponent(q)}`
-          );
-          const data = await response.json();
+        const response = await fetch(`/api/search?q=${encodeURIComponent(q)}`);
+        const data = await response.json();
 
-          if (data.length === 0) {
-            results.innerHTML =
-              '<div style="color:var(--muted)">No results found.</div>';
-            return;
-          }
-
-          // Render results
-          results.innerHTML = data
-            .map(
-              (course) => `
-      <div class="course-card" style="margin-bottom:12px">
-        <div class="course-title">${escapeHtml(course.code)} — ${escapeHtml(course.title)}</div>
-        ${course.professor ? `<div class="meta">Professor: ${escapeHtml(course.professor)}</div>` : ""}
-        ${course.description ? `<div class="meta">${escapeHtml(course.description)}</div>` : ""}
-      </div>
-    `
-            )
-            .join("");
-        } catch (err) {
-          console.error(err);
-          results.innerHTML =
-            '<div style="color:red">Error: Could not fetch search results.</div>';
+        if (!data.length) {
+          dropdown.innerHTML =
+            "<div style='padding:8px;color:var(--muted)'>No results found</div>";
+          dropdown.style.display = "block";
+          return;
         }
-      }
 
-      function escapeHtml(s) {
-        return s.replace(/[&<>\"']/g, function (c) {
-          return {
-            "&": "&amp;",
-            "<": "&lt;",
-            ">": "&gt;",
-            '"': "&quot;",
-            "'": "&#39;",
-          }[c];
+        dropdown.innerHTML = data
+          .map(
+            (course) => `
+        <div class="dropdown-item" style="padding:8px;cursor:pointer;" data-course-id="${course.code}">
+          ${course.code} — ${course.title} ${course.professor ? `(${course.professor})` : ""}
+        </div>`
+          )
+          .join("");
+
+        dropdown.style.display = "block";
+
+        Array.from(dropdown.children).forEach((el, idx) => {
+          el.addEventListener("click", () => {
+            const courseCode = data[idx].code;
+            window.location.href = `/courses/${courseCode}?courseCode=${encodeURIComponent(courseCode)}`;
+          });
         });
       }
 
-      // Accessibility: focus search box on load
-      window.addEventListener("load", () => {
-        document.getElementById("search-input").focus();
+      document.addEventListener("click", (e) => {
+        const dropdown = document.getElementById("search-dropdown");
+        if (!dropdown.contains(e.target) && e.target.id !== "search-input") {
+          dropdown.style.display = "none";
+        }
       });
+
+      async function loadFeaturedCourses() {
+        const container = document.getElementById("featured-grid");
+        try {
+          const res = await fetch("/api/featured");
+          const courses = await res.json();
+
+          container.innerHTML = courses
+            .map(
+              (course) => `
+      <article class="course-card" tabindex="0">
+        <div class="course-title">${course.code} — ${course.title}</div>
+        <div class="meta">Department: ${course.category} • Level: ${course.level}</div> <!-- Updated line -->
+        <p style="margin: 0 0 8px; color: var(--muted); font-size: 14px">${course.description}</p>
+        <a href="/courses/${course.code}" aria-label="View ${course.code} details">View details →</a>
+      </article>`
+            )
+            .join("");
+        } catch (err) {
+          container.innerHTML =
+            "<p style='color:red'>Failed to load featured courses.</p>";
+          console.error(err);
+        }
+      }
+
+      async function loadProfessorSpotlight() {
+        const container = document.getElementById("professor-grid"); // <-- fixed
+        try {
+          const res = await fetch("/api/professors");
+          const professors = await res.json();
+
+          container.innerHTML = professors
+            .map(
+              (prof) => `
+    <div style="background: white; padding: 12px; border-radius: 10px; border: 1px solid #eef2f6; min-width: 220px;">
+      <div style="font-weight: 700">${prof.name}</div>
+      <div style="color: var(--muted); font-size: 13px; margin-bottom: 8px">Department: ${prof.department}</div>
+      <p style="margin: 0; font-size: 13px; color: var(--muted)">${prof.bio}</p>
+    </div>`
+            )
+            .join("");
+        } catch (err) {
+          container.innerHTML =
+            "<p style='color:red'>Failed to load professors.</p>";
+          console.error(err);
+        }
+      }
+
+      // Load on page load
+      loadFeaturedCourses();
+      loadProfessorSpotlight();
     </script>
   </body>
 </html>
