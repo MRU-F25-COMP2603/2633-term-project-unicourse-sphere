@@ -16,7 +16,7 @@ jobs:
       mysql:
         image: mysql:8.0
         env:
-          MYSQL_ROOT_PASSWORD: root # temporary root for setup
+          MYSQL_ROOT_PASSWORD: root
         ports:
           - 3306:3306
         options: >-
@@ -55,6 +55,10 @@ jobs:
       - name: Load database schema
         run: |
           mysql -h 127.0.0.1 -u ci_user -pci_password unicourse_min < ./database/schema.sql
+
+      - name: Seed database with test data #
+        run: |
+          mysql -h 127.0.0.1 -u ci_user -pci_password unicourse_min < ./database/dev_seed.sql
 
       - name: Run Mocha tests
         env:
