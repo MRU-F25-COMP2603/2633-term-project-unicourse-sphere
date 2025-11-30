@@ -89,9 +89,12 @@ CREATE TABLE profiles (
 -- 7) PROFESSORS
 CREATE TABLE professors (
   professor_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  name  VARCHAR(255) NOT NULL,
-  email VARCHAR(255) NOT NULL UNIQUE
+  name        VARCHAR(255) NOT NULL,
+  department  VARCHAR(255) NOT NULL,
+  bio         TEXT,
+  email       VARCHAR(255) NOT NULL UNIQUE
 );
+
 
 -- 8) COURSE PROFESSORS (Mapping)
 CREATE TABLE course_professors (

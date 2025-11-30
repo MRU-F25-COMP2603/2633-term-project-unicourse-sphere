@@ -15,28 +15,38 @@ INSERT INTO profiles (user_id, display_name) VALUES
 -- 2. Courses
 INSERT INTO courses (code, title, description, category) VALUES
   ('COMP 2633', 
-  'Foundations of Software Engineering', 
-  'Software life cycles models. Software process improvement. Goals and methods for requirements analysis and specification, software design, implementation, integration and testing of software.', 
-  'Computing'),
+   'Foundations of Software Engineering', 
+   'Software life cycles models. Software process improvement. Goals and methods for requirements analysis and specification, software design, implementation, integration and testing of software.', 
+   'Computing'),
 
   ('MATH 1203', 
-  'Linear Algebra for Scientists and Engineers', 
-  'Introduction to linear algebra for science students. Topics covered are vector and matrix algebra, systems of linear equations, determinants, linear transformations, polar coordinates and complex numbers.', 
-  'Mathematics'),
+   'Linear Algebra for Scientists and Engineers', 
+   'Introduction to linear algebra for science students. Topics covered are vector and matrix algebra, systems of linear equations, determinants, linear transformations, polar coordinates and complex numbers.', 
+   'Mathematics'),
 
   ('COMP 1501', 
-  'Programming I: Introduction to Problem Solving and Programming', 
-  'The course emphasizes the design of fundamental algorithmic solutions and the implementation of those solutions in a visual development environment.', 
-  'Computing');
+   'Programming I: Introduction to Problem Solving and Programming', 
+   'The course emphasizes the design of fundamental algorithmic solutions and the implementation of those solutions in a visual development environment.', 
+   'Computing');
 
--- 3. Professors
-INSERT INTO professors (name, email) VALUES
-  ('Apoorve Chokshi', 'achokshi@mtroyal.ca'),
-  ('Mark Robinson', 'mrobinson@mtroyal.ca');
+-- 3. Professors (include department!)
+INSERT INTO professors (name, department, bio, email) VALUES
+  ('Apoorve Chokshi', 
+  'Computing', 
+  "Teaches across both the BCIS and Computer Science programs, including programming, game development, and software engineering principles.", 
+  "achokshi@mtroyal.ca"),
+
+  ('Ganesh Bhandari', 
+  'Mathematics', 
+  "Known for clear lectures and practical problem sets.",
+  "gbhandari@mtroyal.ca");
 
 -- 4. Course Professors
+-- Map courses to professors by their IDs
 INSERT INTO course_professors (course_id, professor_id, role) VALUES
-  (1, 1, 'instructor');
+  (1, 1, 'instructor'),   -- COMP 2633 -> Apoorve Chokshi
+  (3, 1, 'instructor'),   -- COMP 1501 -> Apoorve Chokshi
+  (2, 2, 'instructor');   -- MATH 1203 -> Ganesh Bhandari
 
 -- 5. Enrollments
 -- Mentor is enrolled as mentor; student as student
